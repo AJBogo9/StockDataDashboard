@@ -8,3 +8,5 @@ lazy val root = (project in file("."))
   )
 
 libraryDependencies += "org.scalafx" % "scalafx_3" % "20.0.0-R31"
+libraryDependencies += "com.lihaoyi" %% "upickle" % "3.2.0"
+

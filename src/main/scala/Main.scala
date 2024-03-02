@@ -2,7 +2,8 @@ import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 import scalafx.scene.layout.Pane
 import scalafx.scene.shape.Rectangle
-import scalafx.scene.paint.Color._
+import scalafx.scene.paint.Color.*
+
 
 object Main extends JFXApp3:
 
@@ -28,6 +29,9 @@ object Main extends JFXApp3:
     root.children += rectangle
 
   end start
+
+
+  Api.test()
 
 end Main
 
