@@ -1,5 +1,4 @@
 import ujson.Value
-
 import java.io.FileWriter
 import java.nio.file.{Files, Paths}
 import java.time.LocalDate
@@ -11,45 +10,64 @@ import scala.io.Source
 
 object Api:
 
-  val lastRefreshed = LocalDate.parse(readJsonFromFile("src/main/scala/data/TIME_SERIES_DAILY_AAPL.json")("Meta Data")("3. Last Refreshed").toString)
-  // if lastRefreshed.isEqual(LocalDate.now) then
-
-  def apiKey: String =
+  private val filesRefreshedToday: Boolean = LocalDate.parse(getMetaData("src/main/scala/data/TIME_SERIES_DAILY_AAPL.json")("3. Last Refreshed")) == LocalDate.now().minusDays(1)
+  private val dstFolder = "src/main/scala/data"
+  private val apiKey: String =
     val apiKeyFile = "apiKey.txt"
     val source = Source.fromFile(apiKeyFile)
     val key = source.getLines().mkString
     source.close()
     key
 
-  def getJSONStringFromWeb(url: String): String =
-    val html = Source.fromURL(url)
-    html.mkString
+  def getDataFromWebAndSaveToFile(url: String, dst: String): String =
+    if !filesRefreshedToday then // does not use up API calls if data is up to date
+      // get data from api
+      val html = Source.fromURL(url)
+      val text = html.mkString
 
-  def saveDatatoFile(dstPath: String, text: String) =
-    val fw = new FileWriter(dstPath, false)
-    fw.write(text)
-    fw.close()
+      // Write to File
+      val fw = new FileWriter(dst, false)
+      fw.write(text)
+      fw.close()
 
-  def getDataAndSave(url: String, dst: String): String  =
-    val text = getJSONStringFromWeb(url)
-    saveDatatoFile(dst, text)
-    text
+      return text
+
+    ""
+
 
   def readTextFromFile(src: String): String =
+
     val bufferedSource = Source.fromFile(src)
     val text = bufferedSource.mkString
     bufferedSource.close()
     text
 
-  def readJsonFromFile(src: String): Map[String, Map[String, Value]] =
+  def getMetaData(src: String) =
+
     val rawText = readTextFromFile(src)
-    val data: Map[String, ujson.Value] = ujson.read(rawText).obj
+    val metaData: Value = ujson.read(rawText).obj("Meta Data")
+    val usableMetaData = metaData.obj
+    val ret: Map[String, String] = Map()
+    for key <- usableMetaData.keys do
+      ret += key -> usableMetaData(key).str
+    ret
 
-    var mappedData: Map[String, Map[String, ujson.Value]] = Map()
-    for key <- data.keys do
-      mappedData += key -> data(key).obj
+  def getTimeSeries(src: String) =
 
-    mappedData
+    val rawText = readTextFromFile(src)
+    val timeSeries: Map[String, Value] = ujson.read(rawText).obj("Time Series (Daily)").obj
+    var retMap: Map[String, Map[String, Double]] = Map()
+    for date <- timeSeries.keys do
+
+      // converts Value type to Double
+      val numbers: Map[String, Value] = timeSeries(date).obj
+      val newNumbers: Map[String, Double] = Map()
+      for key <- numbers.keys do
+        newNumbers += key -> numbers(key).str.toDouble
+      retMap += date -> newNumbers
+
+    retMap
+
 
 
   def test(): Unit =
@@ -59,24 +77,18 @@ object Api:
 
     val symbol = companies("Apple")
     val function = "TIME_SERIES_DAILY"
-    val key: String = apiKey
 
+    val url1 = s"https://www.alphavantage.co/query?function=$function&symbol=$symbol&apikey=$apiKey"
 
-    val url1 = s"https://www.alphavantage.co/query?function=$function&symbol=$symbol&apikey=$key"
-    val url2 = "https://catfact.ninja/fact"
-    val url3 = "https://www.fruityvice.com/api/fruit/all"
-
-
-    val dstFolder = "src/main/scala/data"
     val fileName = s"${function}_$symbol.json"
-    val dst = s"$dstFolder/$fileName"
-
-    println(dst)
+    val src = s"$dstFolder/$fileName"
 
     Files.createDirectories(Paths.get(dstFolder))
-    // getDataAndSave(url1, dst)
+
+    // src/main/scala/data/TIME_SERIES_DAILY_AAPL.json
+
+    // getDataFromWebAndSaveToFile(url1, src)
 
 
-    val retData = readJsonFromFile(dst)
+    getTimeSeries(src)
 
-    println(retData("Meta Data")("3. Last Refreshed"))
