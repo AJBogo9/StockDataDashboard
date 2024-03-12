@@ -1,3 +1,4 @@
+import lib.Api
 import scalafx.application.JFXApp3
 import scalafx.scene.Scene
 import scalafx.scene.layout.Pane

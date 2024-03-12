@@ -1,3 +1,7 @@
+package Charts
+
+import Charts.ScatterPlot.stage
+import lib.Api.getTimeSeries
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
@@ -28,7 +32,7 @@ object ScatterPlot extends JFXApp3 {
       quickSort(ret)
       ret
     }
-    val apiData = Api.getTimeSeries("src/main/scala/data/TIME_SERIES_DAILY_NVDA.json")
+    val apiData = getTimeSeries("Nvidia")
     val dates = apiData.keys.toList
     // Get the first day of each month from the list of dates
     val firstDaysOfMonths = getFirstDaysOfMonths(dates)

@@ -1,3 +1,7 @@
+package Charts
+
+import Charts.BarChartDemo.stage
+import lib.Api.getTimeSeries
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
@@ -8,7 +12,7 @@ import scala.util.Sorting.quickSort
 
 object BarChartDemo extends JFXApp3 {
   override def start(): Unit = {
-    val ApiData = Api.getTimeSeries("src/main/scala/data/TIME_SERIES_DAILY_NVDA.json")
+    val ApiData = getTimeSeries("Nvidia")
     val dates = ApiData.keys.toArray
     quickSort(dates)
     var datesAndVolyme: Seq[(String, Double)] = Seq()
