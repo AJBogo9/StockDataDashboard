@@ -99,7 +99,6 @@ object Api:
       for key <- dataObj.keys do
         mapped += key -> dataObj(key).str
       ret += key -> mapped
-    println(ret)
     ret
 
   def companySymbol(company: String): String =

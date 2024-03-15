@@ -1,5 +1,0 @@
-package Charts
-
-class Tile {
-
-}

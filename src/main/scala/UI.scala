@@ -5,6 +5,10 @@ import scalafx.scene.Scene
 import scalafx.scene.chart.PieChart
 import scalafx.scene.control.{Button, Label, Menu, MenuBar, MenuItem, ScrollPane, Separator, SplitPane, ToolBar}
 import scalafx.scene.layout.{HBox, TilePane, VBox}
+import charts.PortfolioPieChart.getPieChart
+import charts.VolymeBarChart.getVolymeBarChart
+import charts.ReturnScatterPlot.getScatterPlot
+import charts.TimeSeriesChart.getTimeSeriesChart
 
 object UI extends JFXApp3:
 
@@ -46,38 +50,15 @@ object UI extends JFXApp3:
 
     val left = new VBox:
       children = Array(Label("Hidden components:"), Button("More"), Label("Components"))
+    
 
-    val dataPairs = Seq(("hello", 200), ("world", 100), ("I", 50), ("am going to do sports", 44))
-    val pieChart = new PieChart {
-      title = "Pie Chart"
-      data = ObservableBuffer.from(dataPairs.map({ case (x, y) =>
-        PieChart.Data(x, y)
-      }))
-    }
-
-    val pieChart1 = new PieChart {
-      title = "Pie Chart"
-      data = ObservableBuffer.from(dataPairs.map({ case (x, y) =>
-        PieChart.Data(x, y)
-      }))
-    }
-
-    val pieChart2 = new PieChart {
-      title = "Pie Chart"
-      data = ObservableBuffer.from(dataPairs.map({ case (x, y) =>
-        PieChart.Data(x, y)
-      }))
-    }
-
-    val pieChart3 = new PieChart {
-      title = "Pie Chart"
-      data = ObservableBuffer.from(dataPairs.map({ case (x, y) =>
-        PieChart.Data(x, y)
-      }))
-    }
+    val pieChart = getPieChart
+    val volymeBarChart = getVolymeBarChart("Nvidia")
+    val scatterPlot = getScatterPlot(Array("Nvidia", "Apple"))
+    val lineChart = getTimeSeriesChart("Nvidia")
 
     val charts = new VBox:
-      children = Array(pieChart, pieChart1, pieChart2, pieChart3)
+      children = Array(pieChart, volymeBarChart, scatterPlot, lineChart)
 
     val scroll = new ScrollPane:
       content = charts
