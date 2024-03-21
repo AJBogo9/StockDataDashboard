@@ -47,3 +47,7 @@ object Utils:
     val ret = firstDaysOfMonths.map(formatDate)
     quickSort(ret)
     ret
+
+  def getYearData(data: Array[(String, Double)], year: Int): Array[(String, Double)] =
+    data.filter( (dateStr, _) => LocalDate.parse(dateStr).getYear == year )
+

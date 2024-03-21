@@ -1,9 +1,12 @@
-package charts
+package UIElements.DataAnalysisTools
 
 import lib.Api.{getPortfolioData, getTimeSeries}
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
 import scalafx.scene.chart.PieChart
+import scalafx.scene.control.Alert.AlertType
+import scalafx.scene.control.{Alert, ButtonType}
+
 import scala.collection.mutable.Map
 
 object PortfolioPieChart:
@@ -27,4 +30,3 @@ object PortfolioPieChart:
       data = ObservableBuffer.from(dataPairs.map({ 
         case (x, y) => PieChart.Data(x, y)
       }))
-  

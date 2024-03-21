@@ -1,14 +1,20 @@
+import UIElements.FunctionalityElements.MenuElement.getMenuElement
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
-import scalafx.geometry.Side
+import scalafx.geometry.{Orientation, Pos, Side}
 import scalafx.scene.Scene
 import scalafx.scene.chart.PieChart
-import scalafx.scene.control.{Button, Label, Menu, MenuBar, MenuItem, ScrollPane, Separator, SplitPane, ToolBar}
-import scalafx.scene.layout.{HBox, TilePane, VBox}
-import charts.PortfolioPieChart.getPieChart
-import charts.VolymeBarChart.getVolymeBarChart
-import charts.ReturnScatterPlot.getScatterPlot
-import charts.TimeSeriesChart.getTimeSeriesChart
+import scalafx.scene.control.{Alert, Button, ChoiceBox, Label, Menu, MenuBar, MenuItem, ScrollPane, Separator, SplitPane, ToolBar}
+import scalafx.scene.layout.{BorderPane, FlowPane, HBox, TilePane, VBox}
+import UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
+import UIElements.DataAnalysisTools.VolymeBarChart.getVolymeBarChart
+import UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
+import UIElements.DataAnalysisTools.Tile.getTile
+import UIElements.DataAnalysisTools.TimeSeriesChart.getTimeSeriesChart
+import scalafx.event.ActionEvent
+import scalafx.scene.control.Alert.AlertType
+import UIElements.FunctionalityElements.MenuElement.*
+import UIElements.FunctionalityElements.ToolBar.*
 
 object UI extends JFXApp3:
 
@@ -16,60 +22,90 @@ object UI extends JFXApp3:
     stage = new JFXApp3.PrimaryStage:
       title = "Personal Portfolio Dashboard"
 
-
-    val fileOperations = new Menu("File"):
-      items = Array(
-        MenuItem("Open"),
-        MenuItem("Save")
-      )
-
-    val newChart = new Menu("New"):
-      items = Array(
-        MenuItem("Bar Chart"),
-        MenuItem("Pie Chart"),
-        MenuItem("Scatter Plot"),
-        MenuItem("Tile"),
-        MenuItem("XY chart")
-      )
-
-
-
-    val menu = new MenuBar:
-      menus = Array(fileOperations, newChart)
-
-    val toolBar = new ToolBar:
-      items = Array(
-        Button("Select"),
-        new Separator,
-        Button("Duplicate"),
-        Button("Hide"),
-        Button("Remove"),
-        new Separator,
-        Button("Update")
-      )
-
-    val left = new VBox:
-      children = Array(Label("Hidden components:"), Button("More"), Label("Components"))
+    val menu = getMenuElement
+    val toolBar = getToolBarElement
     
-
+    // Charts
     val pieChart = getPieChart
     val volymeBarChart = getVolymeBarChart("Nvidia")
-    val scatterPlot = getScatterPlot(Array("Nvidia", "Apple"))
+    val scatterPlot = getScatterPlot(Array("Nvidia", "Apple"), 2023)
     val lineChart = getTimeSeriesChart("Nvidia")
+    val tile = getTile("Testing")
 
     val charts = new VBox:
-      children = Array(pieChart, volymeBarChart, scatterPlot, lineChart)
+      children = Array(pieChart, volymeBarChart, scatterPlot, lineChart, tile)
 
-    val scroll = new ScrollPane:
+    val rightSplit = new ScrollPane:
       content = charts
 
+    val leftSplit = new VBox:
+      children = Array(Label("Hidden components:"), Button("More"), Label("Components"))
+
     val splitPane = new SplitPane:
-      items ++= Seq(left, scroll)
+      items ++= Seq(leftSplit, rightSplit)
 
-    val rootVBox = new VBox:
+    val root = new VBox:
       children = Array(menu, toolBar, splitPane)
+      
+
+    stage.scene = Scene(root, 700, 500)
 
 
-    val root = rootVBox
+    // ALERTS
 
-    stage.scene = Scene(parent = root)
+    val choices = ObservableBuffer("Apple", "Nvidia", "Microsoft")
+
+    val choiceBox = new ChoiceBox[String]:
+      items = choices
+      value = choices.head
+
+    val alertContent = new VBox:
+      children = Array(choiceBox)
+      alignment = Pos.Center
+
+    // Create and display the alert box with the choice box
+    var alert = new Alert(AlertType.Confirmation):
+      initOwner(stage)
+      title = "Chart customization"
+      headerText = "Choose company"
+      // Set the custom content to be the choice box
+      dialogPane().setContent(alertContent)
+
+    
+    
+    barChartMenuItem.onAction = (event) =>
+      val result = alert.showAndWait()
+      val company = choiceBox.value.value
+      result match
+        case Some(_) => charts.children += getVolymeBarChart(company)
+        case None =>
+
+    xyChartMenuItem.onAction = (event) =>
+      val result = alert.showAndWait()
+      val company = choiceBox.value.value
+      result match
+        case Some(_) => charts.children += getTimeSeriesChart(company)
+        case None =>
+
+    pieChartMenuItem.onAction = (event) =>
+      val result = alert.showAndWait()
+      val company = choiceBox.value.value
+      result match
+        case Some(_) => charts.children += getVolymeBarChart(company)
+        case None =>
+
+    scatterPlotMenuItem.onAction = (event) =>
+      val result = alert.showAndWait()
+      val company = choiceBox.value.value
+      result match
+        case Some(_) => charts.children += getVolymeBarChart(company)
+        case None =>
+
+    tileMenuItem.onAction = (event) =>
+      val result = alert.showAndWait()
+      val company = choiceBox.value.value
+      result match
+        case Some(_) => charts.children += getVolymeBarChart(company)
+        case None =>
+
+

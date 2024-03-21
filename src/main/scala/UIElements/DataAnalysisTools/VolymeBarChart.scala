@@ -1,4 +1,4 @@
-package charts
+package UIElements.DataAnalysisTools
 
 import lib.Api.getTimeSeries
 import lib.Utils.xySeries
@@ -20,8 +20,8 @@ object VolymeBarChart:
       datesAndVolyme = datesAndVolyme :+ (date, ApiData(date)("5. volume"))
 
     new BarChart(CategoryAxis("Date"), NumberAxis("Volyme")):
-      title = "Bar Chart"
+      title = s"$company trading volyme"
       legendSide = Side.Right
       data = ObservableBuffer(
-        xySeries("NVDA", datesAndVolyme)
+        xySeries(company, datesAndVolyme)
       )
