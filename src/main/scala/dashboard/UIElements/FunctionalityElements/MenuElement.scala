@@ -1,4 +1,4 @@
-package UIElements.FunctionalityElements
+package dashboard.UIElements.FunctionalityElements
 
 import scalafx.scene.control.{Menu, MenuBar, MenuItem}
 
@@ -8,13 +8,15 @@ object MenuElement:
     barChartMenuItem,
     pieChartMenuItem,
     scatterPlotMenuItem,
-    tileMenuItem,
+    portfolioTileMenuItem,
+    stockTileMenuItem,
     xyChartMenuItem
     ) = (
     MenuItem("Bar Chart"),
     MenuItem("Pie Chart"),
     MenuItem("Scatter Plot"),
-    MenuItem("Tile"),
+    MenuItem("Portfolio tile"),
+    MenuItem("Stock tile"),
     MenuItem("XY chart")
   )
 
@@ -27,7 +29,14 @@ object MenuElement:
       )
 
     val createChart = new Menu("New"):
-      items = Array(barChartMenuItem, pieChartMenuItem, scatterPlotMenuItem, tileMenuItem, xyChartMenuItem)
+      items = Array(
+        barChartMenuItem,
+        pieChartMenuItem,
+        scatterPlotMenuItem,
+        portfolioTileMenuItem,
+        stockTileMenuItem,
+        xyChartMenuItem
+      )
 
     val menu = new MenuBar:
       menus = Array(fileOperations, createChart)

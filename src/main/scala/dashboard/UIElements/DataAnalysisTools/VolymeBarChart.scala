@@ -1,7 +1,7 @@
-package UIElements.DataAnalysisTools
+package dashboard.UIElements.DataAnalysisTools
 
-import lib.Api.getTimeSeries
-import lib.Utils.xySeries
+import dashboard.lib.Api.getTimeSeries
+import dashboard.lib.Utils.{borderedElement, xySeries}
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
@@ -11,7 +11,7 @@ import scalafx.scene.chart.{BarChart, CategoryAxis, NumberAxis, XYChart}
 import scala.util.Sorting.quickSort
 
 object VolymeBarChart:
-  def getVolymeBarChart(company: String): BarChart[String, Number] =
+  def getVolymeBarChart(company: String) =
     val ApiData = getTimeSeries(company)
     val dates = ApiData.keys.toArray
     quickSort(dates)
@@ -19,9 +19,11 @@ object VolymeBarChart:
     for date <- dates do
       datesAndVolyme = datesAndVolyme :+ (date, ApiData(date)("5. volume"))
 
-    new BarChart(CategoryAxis("Date"), NumberAxis("Volyme")):
+    val chart = new BarChart(CategoryAxis("Date"), NumberAxis("Volyme")):
       title = s"$company trading volyme"
       legendSide = Side.Right
       data = ObservableBuffer(
         xySeries(company, datesAndVolyme)
       )
+
+    borderedElement(chart)

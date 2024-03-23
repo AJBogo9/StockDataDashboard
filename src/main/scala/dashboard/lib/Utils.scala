@@ -1,7 +1,10 @@
-package lib
+package dashboard.lib
 
 import scalafx.collections.ObservableBuffer
+import scalafx.geometry.Orientation
 import scalafx.scene.chart.XYChart
+import scalafx.scene.control.Separator
+import scalafx.scene.layout.BorderPane
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -9,29 +12,17 @@ import scala.util.Sorting.quickSort
 
 object Utils:
 
-
-  /*
-  def xySeries[T](name: String, data: Seq[(T, Double)]) =
-    XYChart.Series[T, Number](
-      name,
-      ObservableBuffer.from(
-        data.map({ case (x, y) => XYChart.Data[T, Number](x, y) }))
-    )
-   */
-
   def xySeriesScatter(name: String, data: Seq[(Int, Double)]) =
-    XYChart.Series[Number, Number](
-      name,
-      ObservableBuffer.from(
-        data.map({ case (x, y) => XYChart.Data[Number, Number](x, y) }))
+    val dataInObservableBuffer = ObservableBuffer.from(
+      data.map( (x, y) => XYChart.Data[Number, Number](x, y) )
     )
+    XYChart.Series[Number, Number](name, dataInObservableBuffer)
 
   def xySeries(name: String, data: Seq[(String, Double)]) =
-    XYChart.Series[String, Number](
-      name,
-      ObservableBuffer.from(
-        data.map({ case (x, y) => XYChart.Data[String, Number](x, y) }))
+    val dataInObservableBuffer = ObservableBuffer.from(
+      data.map( (x, y) => XYChart.Data[String, Number](x, y) )
     )
+    XYChart.Series[String, Number](name, dataInObservableBuffer)
 
   private def parseDate(dateString: String): LocalDate =
     LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
@@ -50,4 +41,12 @@ object Utils:
 
   def getYearData(data: Array[(String, Double)], year: Int): Array[(String, Double)] =
     data.filter( (dateStr, _) => LocalDate.parse(dateStr).getYear == year )
+
+  def borderedElement(center: scalafx.scene.Node) = new BorderPane(
+    center,
+    Separator(Orientation.Horizontal),
+    Separator(Orientation.Vertical),
+    Separator(Orientation.Horizontal),
+    Separator(Orientation.Vertical)
+  )
 

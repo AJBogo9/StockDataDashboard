@@ -1,7 +1,7 @@
-package UIElements.DataAnalysisTools
+package dashboard.UIElements.DataAnalysisTools
 
-import lib.Api.getTimeSeries
-import lib.Utils.xySeries
+import dashboard.lib.Api.getTimeSeries
+import dashboard.lib.Utils.{borderedElement, xySeries}
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
@@ -13,9 +13,12 @@ object TimeSeriesChart:
     val timeSeries = getTimeSeries(company)
     var dateValuePairs = timeSeries.map(date => (date._1, date._2("1. open"))).toSeq.sortBy(_._1)
     
-    new LineChart(CategoryAxis("Date"), NumberAxis("Price")):
+    
+    val chart = new LineChart(CategoryAxis("Date"), NumberAxis("Price")):
       title = s"$company stock value"
       legendSide = Side.Right
       data = ObservableBuffer(
         xySeries(company, dateValuePairs)
       )
+
+    borderedElement(chart)

@@ -1,7 +1,7 @@
-package UIElements.DataAnalysisTools
+package dashboard.UIElements.DataAnalysisTools
 
-import lib.Api.getTimeSeries
-import lib.Utils.{getFirstDaysOfMonths, getYearData, xySeries, xySeriesScatter}
+import dashboard.lib.Api.getTimeSeries
+import dashboard.lib.Utils.{borderedElement, getFirstDaysOfMonths, getYearData, xySeries, xySeriesScatter}
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
@@ -27,7 +27,7 @@ object ReturnScatterPlot:
       val dataPairs: Array[(String, Double)] = firstDaysOfMonthsOfYear.map(date => (date, apiData(date)("1. open")))
 
 
-      var monthAndReturn: Array[(Int, Double)] = Array()
+      var monthAndReturn: Array[(Int, Double)] = Array((1, 0.0))
       for i <- 1 until dataPairs.length do
         val (lastMonthPrice, thisMonthPrice) = (dataPairs(i - 1)._2, dataPairs(i)._2)
         val difference = thisMonthPrice - lastMonthPrice
@@ -39,9 +39,10 @@ object ReturnScatterPlot:
 
     val chartData = ObservableBuffer.from(companyData)
 
-    new ScatterChart(NumberAxis("Month", 1.0, 12.0, 1.0), NumberAxis(s"Return per month ($$)")):
+    val chart = new ScatterChart(NumberAxis("Month", 1.0, 12.0, 1.0), NumberAxis(s"Return per month ($$)")):
       title = s"Stock Growth Per Month In $year"
       legendSide = Side.Right
       data = chartData
 
+    borderedElement(chart)
 

@@ -1,6 +1,7 @@
-package UIElements.DataAnalysisTools
+package dashboard.UIElements.DataAnalysisTools
 
-import lib.Api.{getPortfolioData, getTimeSeries}
+import dashboard.lib.Api.{getPortfolioData, getTimeSeries}
+import dashboard.lib.Utils.borderedElement
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
 import scalafx.scene.chart.PieChart
@@ -11,9 +12,9 @@ import scala.collection.mutable.Map
 
 object PortfolioPieChart:
 
-  def getPieChart: PieChart =
+  def getPieChart(portfolioName: String) =
     val portfolioData: Map[String, Map[String, String]] = 
-      getPortfolioData("src/main/scala/portfolios/portfolio1.json")
+      getPortfolioData(portfolioName)
     val stockNames = portfolioData.keys
     var dataPairs: Seq[(String, Double)] = Seq()
     for key <- stockNames do
@@ -23,10 +24,12 @@ object PortfolioPieChart:
       val price: Double = timeSeriesData(latestDate)("1. open")
       dataPairs = dataPairs :+ (key, (portfolioData(key)("Quantity").toInt * price))
 
-    new PieChart:
+    val pieChart = new PieChart:
       title = "Pie Chart"
       clockwise = false
       legendSide = Side.Right
       data = ObservableBuffer.from(dataPairs.map({ 
         case (x, y) => PieChart.Data(x, y)
       }))
+
+    borderedElement(pieChart)
