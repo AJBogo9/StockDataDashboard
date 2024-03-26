@@ -1,24 +1,35 @@
 package dashboard.UIElements.FunctionalityElements
 
-import scalafx.scene.control.{Button, Label, Separator, ToolBar}
+import dashboard.UIElements.FunctionalityElements.RightSplit.{pane, removeSelectedComponents}
+import scalafx.scene.control.{Button, Label, Separator, ToggleButton, ToolBar}
+import dashboard.UIElements.FunctionalityElements.LeftSplit.hideComponent
+import scalafx.beans.Observable.sfxObservable2jfx
+import scalafx.collections.ObservableBuffer
+import scalafx.scene.Node
 
 object ToolBar:
 
   val (
     selectButton,
-    duplicateButton,
     hideButton,
     removeButton,
     refreshButton,
     lastRefreshed
   ) = (
-    Button("Select"),
-    Button("Duplicate"),
+    ToggleButton("Select"),
     Button("Hide"),
     Button("Remove"),
     Button("Refresh"),
     Label("Last Refreshed: DUNNO??")
   )
+
+  hideButton.onAction = (event) =>
+    val removedComponents = removeSelectedComponents()
+    removedComponents.foreach(hideComponent)
+
+  removeButton.onAction = (event) =>
+    removeSelectedComponents()
+
 
   def getToolBarElement: ToolBar =
 
@@ -26,7 +37,6 @@ object ToolBar:
       items = Array(
         selectButton,
         new Separator,
-        duplicateButton,
         hideButton,
         removeButton,
         new Separator,

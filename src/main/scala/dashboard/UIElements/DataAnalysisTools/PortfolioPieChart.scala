@@ -25,11 +25,13 @@ object PortfolioPieChart:
       dataPairs = dataPairs :+ (key, (portfolioData(key)("Quantity").toInt * price))
 
     val pieChart = new PieChart:
-      title = "Pie Chart"
+      title = s"Portfolio pie chart ($portfolioName)"
       clockwise = false
-      legendSide = Side.Right
+      legendSide = Side.Bottom
+      prefWidth = 250.0
+      prefHeight = 250.0
       data = ObservableBuffer.from(dataPairs.map({ 
         case (x, y) => PieChart.Data(x, y)
       }))
-
+    
     borderedElement(pieChart)
