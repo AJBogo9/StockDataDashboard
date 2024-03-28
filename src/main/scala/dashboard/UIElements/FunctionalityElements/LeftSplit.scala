@@ -34,8 +34,11 @@ import scalafx.scene.SceneIncludes.jfxLabeled2sfx
 import scalafx.scene.control.ControlIncludes.jfxLabeled2sfx
 import dashboard.UIElements.FunctionalityElements.RightSplit.addElementToPane
 import dashboard.lib.Api.getTimeSeries
+import javafx.scene.paint.Color
 import scalafx.Includes.jfxNode2sfx
 import scalafx.scene.SceneIncludes.jfxNode2sfx
+import scalafx.Includes.observableList2ObservableBuffer
+import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 
 import scala.collection.mutable.Buffer
 
@@ -111,23 +114,23 @@ object LeftSplit:
             duplicate = getPieChart(name)
 
           case scatterPlot: ScatterChart[Number, Number] =>
-
-            // TODO: implement scatterplot dupe
-
-            // val name = scatterPlot.getTitle.split(" ")(3)
-            println("testing Scatter")
+            val year = scatterPlot.getTitle.split(" ")(5).toInt
+            var companyNames = Array[String]()
+            val companyData = scatterPlot.getData
+            for serie <- companyData do
+                val companyName = serie.getName.split(" ").head
+                companyNames = companyNames :+ companyName
+            duplicate = getScatterPlot(companyNames, year)
 
           case xyChart: LineChart[String, Number] =>
             val name = xyChart.getTitle.split(" ")(0)
-            duplicate = getTimeSeriesChart(name)
-            println("testing XY")
+            val color = xyChart.getStylesheets.getFirst.split("#")(1).take(8)
+            duplicate = getTimeSeriesChart(name, color)
 
           case barChart: BarChart[String, Number] =>
             val name = barChart.getTitle.split(" ")(0)
-            duplicate = getVolymeBarChart(name)
-            println("testing Bar")
-
-
+            val color = barChart.getStylesheets.getFirst.split("#")(1).take(8)
+            duplicate = getVolymeBarChart(name, color)
 
       case tile: javafx.scene.layout.VBox =>
         val name = tile.children.head.asInstanceOf[javafx.scene.control.Label].text()
@@ -136,10 +139,5 @@ object LeftSplit:
           duplicate = getPortfolioTile(name)
         else if tileElementCount == 5 then
           duplicate = getStockTile(name)
-
-
-
-
-
 
     hideComponent(duplicate)

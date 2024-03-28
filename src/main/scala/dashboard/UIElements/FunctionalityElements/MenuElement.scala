@@ -1,7 +1,7 @@
 package dashboard.UIElements.FunctionalityElements
 
 import dashboard.UIElements.FunctionalityElements.Alerts.{getBarChartAlert, getPieChartAlert, getPortfolioTileAlert, getScatterPlotAlert, getStockTileAlert, getXYChartAlert}
-import scalafx.scene.control.{Menu, MenuBar, MenuItem}
+import scalafx.scene.control.{ButtonType, Menu, MenuBar, MenuItem}
 import dashboard.UI.charts
 import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
 import dashboard.UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
@@ -28,23 +28,25 @@ object MenuElement:
     MenuItem("XY chart")
   )
 
-  private val (barChartAlert, barChartChoiceBox) = getBarChartAlert
+  private val (barChartAlert, barChartChoiceBox, barColorPicker) = getBarChartAlert
   barChartMenuItem.onAction = (event) =>
     val result = barChartAlert.showAndWait()
     val company = barChartChoiceBox.value.value
-    val barChart = getVolymeBarChart(company)
+    val color = barColorPicker.value.apply().toString.drop(2)
+    val barChart = getVolymeBarChart(company, color)
     result match
-      case Some(_) => addElementToPane(barChart)
-      case None =>
+      case Some(ButtonType.OK) => addElementToPane(barChart)
+      case _ =>
 
-  private val (xyChartAlert, xyChartChoiceBox) = getXYChartAlert
+  private val (xyChartAlert, xyChartChoiceBox, xyColorPicker) = getXYChartAlert
   xyChartMenuItem.onAction = (event) =>
     val result = xyChartAlert.showAndWait()
     val company = xyChartChoiceBox.value.value
-    val xyChart = getTimeSeriesChart(company)
+    val color = xyColorPicker.value.apply().toString.drop(2)
+    val xyChart = getTimeSeriesChart(company, color)
     result match
-      case Some(_) => addElementToPane(xyChart)
-      case None =>
+      case Some(ButtonType.OK) => addElementToPane(xyChart)
+      case _ =>
 
   private val (pieChartAlert, portfolioChoiseBoxPieChart) = getPieChartAlert
   pieChartMenuItem.onAction = (event) =>
@@ -52,8 +54,8 @@ object MenuElement:
     val portfolio = portfolioChoiseBoxPieChart.value.value
     val pieChart = getPieChart(portfolio)
     result match
-      case Some(_) => addElementToPane(pieChart)
-      case None =>
+      case Some(ButtonType.OK) => addElementToPane(pieChart)
+      case _ =>
 
   private val (portfolioTileAlert, portfolioChoiceBoxTile) = getPortfolioTileAlert
   portfolioTileMenuItem.onAction = (event) =>
@@ -61,8 +63,8 @@ object MenuElement:
     val portfolio = portfolioChoiceBoxTile.value.value
     val portfolioTile = getPortfolioTile(portfolio)
     result match
-      case Some(_) => addElementToPane(portfolioTile) 
-      case None =>
+      case Some(ButtonType.OK) => addElementToPane(portfolioTile)
+      case _ =>
 
   private val (stockTileAlert, stockTileChoiseBox) = getStockTileAlert
   stockTileMenuItem.onAction = (event) =>
@@ -70,8 +72,8 @@ object MenuElement:
     val company = stockTileChoiseBox.value.value
     val stockTile = getStockTile(company)
     result match
-      case Some(_) => addElementToPane(stockTile) 
-      case None =>
+      case Some(ButtonType.OK) => addElementToPane(stockTile)
+      case _ =>
 
   private val (scatterPlotAlert, scatterPlotChoiceBox1, scatterPlotChoiceBox2, yearChoiceBox) =
     getScatterPlotAlert
@@ -81,8 +83,8 @@ object MenuElement:
     val year = yearChoiceBox.value.value
     val scatterPlot = getScatterPlot(companies, year)
     result match
-      case Some(_) => addElementToPane(scatterPlot)
-      case None =>
+      case Some(ButtonType.OK) => addElementToPane(scatterPlot)
+      case _ =>
 
   def getMenuElement: MenuBar =
 

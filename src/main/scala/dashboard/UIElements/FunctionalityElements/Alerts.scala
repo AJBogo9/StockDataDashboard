@@ -6,8 +6,9 @@ import scalafx.geometry.Pos
 import scalafx.scene.Scene
 import scalafx.scene.chart.PieChart
 import scalafx.scene.control.Alert.AlertType
-import scalafx.scene.control.{Alert, ChoiceBox, ComboBox}
+import scalafx.scene.control.{Alert, ChoiceBox, ColorPicker, ComboBox}
 import scalafx.scene.layout.VBox
+import scalafx.scene.paint.Color
 
 import scala.:+
 
@@ -22,9 +23,11 @@ object Alerts:
     val companyChoiceBox = new ChoiceBox[String]:
       items = stockChoises
       value = stockChoises.head
+
+    val colorPicker = new ColorPicker(Color.White)
     
     val alertContent = new VBox:
-      children = Array(companyChoiceBox)
+      children = Array(companyChoiceBox, colorPicker)
       alignment = Pos.Center
 
     // Create and display the alert box with the choice box
@@ -35,7 +38,7 @@ object Alerts:
       // Set the custom content to be the choice box
       dialogPane().setContent(alertContent)
 
-    (alert, companyChoiceBox)
+    (alert, companyChoiceBox, colorPicker)
 
   def getXYChartAlert =
     
@@ -43,8 +46,10 @@ object Alerts:
       items = stockChoises
       value = stockChoises.head
 
+    val colorPicker = new ColorPicker(Color.White)
+
     val alertContent = new VBox:
-      children = Array(companyChoiceBox)
+      children = Array(companyChoiceBox, colorPicker)
       alignment = Pos.Center
 
     // Create and display the alert box with the choice box
@@ -55,7 +60,7 @@ object Alerts:
       // Set the custom content to be the choice box
       dialogPane().setContent(alertContent)
 
-    (alert, companyChoiceBox)
+    (alert, companyChoiceBox, colorPicker)
 
   def getPieChartAlert =
 
@@ -123,16 +128,20 @@ object Alerts:
       items = stockChoises
       value = stockChoises.head
 
+    val colorPicker1 = new ColorPicker(Color.White)
+
     val companyChoiceBox2 = new ChoiceBox[String]:
       items = stockChoises
       value = stockChoises.last
+
+    val colorPicker2 = new ColorPicker(Color.White)
 
     val yearChoiceBox = new ChoiceBox[Int]:
       items = years
       value = years.head
 
     val alertContent = new VBox:
-      children = Array(companyChoiceBox1, companyChoiceBox2, yearChoiceBox)
+      children = Array(companyChoiceBox1, colorPicker1, companyChoiceBox2, colorPicker2, yearChoiceBox)
       alignment = Pos.Center
 
     // Create and display the alert box with the choice box
@@ -142,5 +151,7 @@ object Alerts:
       headerText = "Choose company and year"
       // Set the custom content to be the choice box
       dialogPane().setContent(alertContent)
+
+
 
     (alert, companyChoiceBox1, companyChoiceBox2, yearChoiceBox)

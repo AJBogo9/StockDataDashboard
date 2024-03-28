@@ -11,7 +11,7 @@ import scalafx.scene.chart.{BarChart, CategoryAxis, NumberAxis, XYChart}
 import scala.util.Sorting.quickSort
 
 object VolymeBarChart:
-  def getVolymeBarChart(company: String) =
+  def getVolymeBarChart(company: String, color: String) =
     val ApiData = getTimeSeries(company)
     val dates = ApiData.keys.toArray
     quickSort(dates)
@@ -25,5 +25,12 @@ object VolymeBarChart:
       data = ObservableBuffer(
         xySeries(company, datesAndVolyme)
       )
+
+    chart.getStylesheets().setAll(
+      s"""
+                        data:text/css,
+                        .default-color0.chart-bar { -fx-background-color: #$color; }
+                        """
+    )
 
     borderedElement(chart)

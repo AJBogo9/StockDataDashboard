@@ -18,11 +18,11 @@ object Utils:
     )
     XYChart.Series[Number, Number](name, dataInObservableBuffer)
 
-  def xySeries(name: String, data: Seq[(String, Double)]) =
+  def xySeries(companyName: String, companyData: Seq[(String, Double)]) =
     val dataInObservableBuffer = ObservableBuffer.from(
-      data.map( (x, y) => XYChart.Data[String, Number](x, y) )
+      companyData.map((x, y) => XYChart.Data[String, Number](x, y))
     )
-    XYChart.Series[String, Number](name, dataInObservableBuffer)
+    XYChart.Series[String, Number](companyName, dataInObservableBuffer)
 
   private def parseDate(dateString: String): LocalDate =
     LocalDate.parse(dateString, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
