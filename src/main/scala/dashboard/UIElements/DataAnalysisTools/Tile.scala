@@ -1,7 +1,7 @@
 package dashboard.UIElements.DataAnalysisTools
 
+import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
 import dashboard.lib.Api.{getPortfolioData, getTimeSeries}
-import dashboard.lib.Utils.borderedElement
 import scalafx.application.JFXApp3
 import scalafx.geometry.{Orientation, Pos}
 import scalafx.scene.Scene
@@ -14,7 +14,7 @@ import scala.math.sqrt
 
 object Tile:
   
-  def getStockTile(stockName: String): BorderPane =
+  def getStockTile(stockName: String) =
     val stockTimeSeries = getTimeSeries(stockName)
     val stockOpenValuesMap = stockTimeSeries.keys.map(date => date -> stockTimeSeries(date)("1. open")).toMap
 
@@ -48,7 +48,9 @@ object Tile:
 
     val formatter = java.text.NumberFormat.getCurrencyInstance
 
-    val stockTileCenter = new VBox:
+    val (chartWidth, chartHeigth) = componentWidthAndHeigth
+    
+    val stockTile = new VBox:
       children = Array(
         stockNameLabel,
         Label(s"Min value: ${formatter.format(minValue._2)} (${minValue._1})"),
@@ -57,11 +59,13 @@ object Tile:
         Label(s"Return standard deviation: ${formatter.format(standardDeviationReturn)}")
       )
       alignment = Pos.Center
+      prefWidth = chartWidth
+      prefHeight = chartHeigth
 
-    borderedElement(stockTileCenter)
+    stockTile
 
 
-  def getPortfolioTile(portfolioName: String): BorderPane =
+  def getPortfolioTile(portfolioName: String) =
 
     val portfolioData = getPortfolioData(portfolioName)
     val companyAndQuantityMap = portfolioData.keys.map(company => company -> portfolioData(company)("Quantity")).toMap
@@ -83,12 +87,16 @@ object Tile:
 
     val formatter = java.text.NumberFormat.getCurrencyInstance
 
-    val portfolioTileCenter = new VBox:
+    val (chartWidth, chartHeigth) = componentWidthAndHeigth
+
+    val portfolioTile = new VBox:
       children = Array(
         portfolioNameLabel,
         Label(s"Portfolio value: ${formatter.format(portfolioValue)}")
       )
       alignment = Pos.Center
+      prefWidth = chartWidth
+      prefHeight = chartHeigth
 
-    borderedElement(portfolioTileCenter)
+    portfolioTile
     

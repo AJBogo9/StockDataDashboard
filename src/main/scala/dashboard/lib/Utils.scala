@@ -41,12 +41,5 @@ object Utils:
 
   def getYearData(data: Array[(String, Double)], year: Int): Array[(String, Double)] =
     data.filter( (dateStr, _) => LocalDate.parse(dateStr).getYear == year )
-
-  def borderedElement(center: scalafx.scene.Node) = new BorderPane(
-    center,
-    Separator(Orientation.Horizontal),
-    Separator(Orientation.Vertical),
-    Separator(Orientation.Horizontal),
-    Separator(Orientation.Vertical)
-  )
+  
 

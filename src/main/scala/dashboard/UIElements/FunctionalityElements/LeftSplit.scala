@@ -67,12 +67,10 @@ object LeftSplit:
     val addButton = new Button("Add")
     val duplicateButton = new Button("Duplicate")
 
-    val center = element.asInstanceOf[BorderPane].center.value
-
     val separator = new Separator:
       orientation = Orientation.Vertical
 
-    center match
+    element match
       case chart: javafx.scene.chart.Chart =>
         hiddenElement.children = Array(
           Label(s" - ${chart.title.value} "),
@@ -104,33 +102,29 @@ object LeftSplit:
   private def duplicateElement(element: Node) =
     var duplicate = element
 
-    val center = element.asInstanceOf[BorderPane].center.value
-    center match
-      case chart: javafx.scene.chart.Chart =>
+    element match
+      case pieChart: PieChart =>
+        val name = pieChart.getTitle.split(" ")(3)
+        duplicate = getPieChart(name)
 
-        chart match
-          case pieChart: PieChart =>
-            val name = pieChart.getTitle.split(" ")(3)
-            duplicate = getPieChart(name)
+      case scatterPlot: ScatterChart[Number, Number] =>
+        val year = scatterPlot.getTitle.split(" ")(5).toInt
+        var companyNames = Array[String]()
+        val companyData = scatterPlot.getData
+        for serie <- companyData do
+            val companyName = serie.getName.split(" ").head
+            companyNames = companyNames :+ companyName
+        duplicate = getScatterPlot(companyNames, year)
 
-          case scatterPlot: ScatterChart[Number, Number] =>
-            val year = scatterPlot.getTitle.split(" ")(5).toInt
-            var companyNames = Array[String]()
-            val companyData = scatterPlot.getData
-            for serie <- companyData do
-                val companyName = serie.getName.split(" ").head
-                companyNames = companyNames :+ companyName
-            duplicate = getScatterPlot(companyNames, year)
+      case xyChart: LineChart[String, Number] =>
+        val name = xyChart.getTitle.split(" ")(0)
+        val color = xyChart.getStylesheets.getFirst.split("#")(1).take(8)
+        duplicate = getTimeSeriesChart(name, color)
 
-          case xyChart: LineChart[String, Number] =>
-            val name = xyChart.getTitle.split(" ")(0)
-            val color = xyChart.getStylesheets.getFirst.split("#")(1).take(8)
-            duplicate = getTimeSeriesChart(name, color)
-
-          case barChart: BarChart[String, Number] =>
-            val name = barChart.getTitle.split(" ")(0)
-            val color = barChart.getStylesheets.getFirst.split("#")(1).take(8)
-            duplicate = getVolymeBarChart(name, color)
+      case barChart: BarChart[String, Number] =>
+        val name = barChart.getTitle.split(" ")(0)
+        val color = barChart.getStylesheets.getFirst.split("#")(1).take(8)
+        duplicate = getVolymeBarChart(name, color)
 
       case tile: javafx.scene.layout.VBox =>
         val name = tile.children.head.asInstanceOf[javafx.scene.control.Label].text()

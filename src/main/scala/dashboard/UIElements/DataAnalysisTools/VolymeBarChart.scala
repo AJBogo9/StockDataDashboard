@@ -1,7 +1,8 @@
 package dashboard.UIElements.DataAnalysisTools
 
+import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
 import dashboard.lib.Api.getTimeSeries
-import dashboard.lib.Utils.{borderedElement, xySeries}
+import dashboard.lib.Utils.xySeries
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
@@ -19,9 +20,14 @@ object VolymeBarChart:
     for date <- dates do
       datesAndVolyme = datesAndVolyme :+ (date, ApiData(date)("5. volume"))
 
+
+    val (chartWidth, chartHeigth) = componentWidthAndHeigth
+
     val chart = new BarChart(CategoryAxis("Date"), NumberAxis("Volyme")):
       title = s"$company trading volyme"
-      legendSide = Side.Right
+      legendSide = Side.Bottom
+      prefWidth = chartWidth
+      prefHeight = chartHeigth
       data = ObservableBuffer(
         xySeries(company, datesAndVolyme)
       )
@@ -33,4 +39,4 @@ object VolymeBarChart:
                         """
     )
 
-    borderedElement(chart)
+    chart

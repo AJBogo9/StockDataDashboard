@@ -1,0 +1,49 @@
+{
+  "modelSaveFile": {
+    "content": {
+
+      "pie chart": {
+        "portfolio": [
+          "portfolio1"
+        ],
+        "color": ""
+      },
+
+      "scatter plot": {
+        "company": [
+          "Apple",
+          "Microsoft"
+        ],
+        "color": ""
+      },
+
+      "stock tile": {
+        "company": [
+          "Apple"
+        ],
+        "color": ""
+      },
+
+      "portfolio tile": {
+        "portfolio": [
+          "Apple"
+        ],
+        "color": ""
+      },
+
+      "xy chart": {
+        "company": [
+          "Apple"
+        ],
+        "color": "000000ff"
+      },
+
+      "bar chart": {
+        "company": [
+          "Apple"
+        ],
+        "color": "000000ff"
+      }
+    }
+  }
+}

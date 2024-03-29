@@ -1,7 +1,8 @@
 package dashboard.UIElements.DataAnalysisTools
 
+import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
 import dashboard.lib.Api.getTimeSeries
-import dashboard.lib.Utils.{borderedElement, getFirstDaysOfMonths, getYearData, xySeries, xySeriesScatter}
+import dashboard.lib.Utils.{getFirstDaysOfMonths, getYearData, xySeries, xySeriesScatter}
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
@@ -39,10 +40,14 @@ object ReturnScatterPlot:
 
     val chartData = ObservableBuffer.from(companyData)
 
+    val (chartWidth, chartHeigth) = componentWidthAndHeigth
+    
     val chart = new ScatterChart(NumberAxis("Month", 1.0, 12.0, 1.0), NumberAxis(s"Return per month ($$)")):
       title = s"Stock Growth Per Month In $year"
-      legendSide = Side.Right
+      legendSide = Side.Bottom
+      prefWidth = chartWidth
+      prefHeight = chartHeigth
       data = chartData
 
-    borderedElement(chart)
+    chart
 

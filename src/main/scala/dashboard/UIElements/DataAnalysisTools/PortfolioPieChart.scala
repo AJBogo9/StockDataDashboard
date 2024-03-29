@@ -1,7 +1,7 @@
 package dashboard.UIElements.DataAnalysisTools
 
+import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
 import dashboard.lib.Api.{getPortfolioData, getTimeSeries}
-import dashboard.lib.Utils.borderedElement
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
 import scalafx.scene.chart.PieChart
@@ -24,14 +24,16 @@ object PortfolioPieChart:
       val price: Double = timeSeriesData(latestDate)("1. open")
       dataPairs = dataPairs :+ (key, (portfolioData(key)("Quantity").toInt * price))
 
+    val (chartWidth, chartHeigth) = componentWidthAndHeigth
+
     val pieChart = new PieChart:
-      title = s"Portfolio pie chart ($portfolioName)"
+      title = s"Portfolio pie chart $portfolioName"
       clockwise = false
       legendSide = Side.Bottom
-      prefWidth = 250.0
-      prefHeight = 250.0
+      prefWidth = chartWidth
+      prefHeight = chartHeigth
       data = ObservableBuffer.from(dataPairs.map({ 
         case (x, y) => PieChart.Data(x, y)
       }))
-    
-    borderedElement(pieChart)
+
+    pieChart
