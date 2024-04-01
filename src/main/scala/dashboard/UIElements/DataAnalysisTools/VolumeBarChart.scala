@@ -11,25 +11,25 @@ import scalafx.scene.chart.{BarChart, CategoryAxis, NumberAxis, XYChart}
 
 import scala.util.Sorting.quickSort
 
-object VolymeBarChart:
-  def getVolymeBarChart(company: String, color: String) =
+object VolumeBarChart:
+  def getVolumeBarChart(company: String, color: String) =
     val ApiData = getTimeSeries(company)
     val dates = ApiData.keys.toArray
     quickSort(dates)
-    var datesAndVolyme: Seq[(String, Double)] = Seq()
+    var datesAndVolume: Seq[(String, Double)] = Seq()
     for date <- dates do
-      datesAndVolyme = datesAndVolyme :+ (date, ApiData(date)("5. volume"))
+      datesAndVolume = datesAndVolume :+ (date, ApiData(date)("5. volume"))
 
 
     val (chartWidth, chartHeigth) = componentWidthAndHeigth
 
-    val chart = new BarChart(CategoryAxis("Date"), NumberAxis("Volyme")):
-      title = s"$company trading volyme"
+    val chart = new BarChart(CategoryAxis("Date"), NumberAxis("Volume")):
+      title = s"$company trading volume"
       legendSide = Side.Bottom
       prefWidth = chartWidth
       prefHeight = chartHeigth
       data = ObservableBuffer(
-        xySeries(company, datesAndVolyme)
+        xySeries(company, datesAndVolume)
       )
 
     chart.getStylesheets().setAll(

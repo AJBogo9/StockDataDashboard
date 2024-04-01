@@ -45,6 +45,22 @@ object RightSplit:
     strokeDashArray = List(3d, 3d)
     visible = false
 
+
+  // this button is used to ensure that pane reaches over the whole window.
+  // if this button is not in place and the pane is empty, the pane will only be the
+  // size of its componets sizes
+  val buttonFarAway = new Button("█▄ █ ▀█▀")
+  buttonFarAway.layoutX = 9999
+  buttonFarAway.layoutY = 9999
+  def getPane = pane
+
+  def clearRightSplit() =
+    pane.children = Array[scalafx.scene.Node](buttonFarAway, selectionRectangle)
+    paneSlotsOccupied = Buffer(
+      Buffer(false, false, false, false),
+      Buffer(false, false, false, false)
+    )
+  
   def getRightSplit =
 
     // Create a rectangle to represent the selection area
@@ -97,15 +113,7 @@ object RightSplit:
       if selectButton.selected() then
         selectionRectangle.visible = false
 
-
-    // this button is used to ensure that pane reaches over the whole window.
-    // if this button is not in place and the pane is empty, the pane will only be the
-    // size of its componets sizes
-    val buttonFarAway = new Button("Congratulations, you found me :)")
     pane.children.addAll(selectionRectangle, buttonFarAway)
-    buttonFarAway.layoutX = 9999
-    buttonFarAway.layoutY = 9999
-
 
     pane
 

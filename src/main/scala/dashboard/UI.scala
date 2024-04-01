@@ -4,7 +4,7 @@ import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
 import dashboard.UIElements.DataAnalysisTools.Tile.{getPortfolioTile, getStockTile}
 import dashboard.UIElements.DataAnalysisTools.TimeSeriesChart.getTimeSeriesChart
 import dashboard.UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
-import dashboard.UIElements.DataAnalysisTools.VolymeBarChart.getVolymeBarChart
+import dashboard.UIElements.DataAnalysisTools.VolumeBarChart.getVolumeBarChart
 import dashboard.UIElements.DataAnalysisTools.Tile.*
 import dashboard.UIElements.FunctionalityElements.Alerts.*
 import dashboard.UIElements.FunctionalityElements.LeftSplit.getLeftSplit

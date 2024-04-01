@@ -5,7 +5,7 @@ import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
 import dashboard.UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
 import dashboard.UIElements.DataAnalysisTools.Tile.*
 import dashboard.UIElements.DataAnalysisTools.TimeSeriesChart.getTimeSeriesChart
-import dashboard.UIElements.DataAnalysisTools.VolymeBarChart.getVolymeBarChart
+import dashboard.UIElements.DataAnalysisTools.VolumeBarChart.getVolumeBarChart
 import javafx.scene.chart.{BarChart, Chart, LineChart, PieChart, ScatterChart}
 import javafx.scene.Node
 import javafx.scene.layout.BorderPane
@@ -39,27 +39,33 @@ import scalafx.Includes.jfxNode2sfx
 import scalafx.scene.SceneIncludes.jfxNode2sfx
 import scalafx.Includes.observableList2ObservableBuffer
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
+import scalafx.collections.ObservableBuffer
 
 import scala.collection.mutable.Buffer
 
 object LeftSplit:
 
   private val leftSideVBox = new VBox
+  private var hiddenElements: ObservableBuffer[Node] = ObservableBuffer()
+  private val leftSplitHeader = new Label(s"Hidden elements:"):
+    font = Font("System", FontWeight.ExtraBold, 20)
+  
+  def getLeftVbox = leftSideVBox
+  def getHiddenElements = hiddenElements
 
+  def clearLeftSplit() =
+    getLeftVbox.children = Array[scalafx.scene.Node](leftSplitHeader)
+    hiddenElements = ObservableBuffer(leftSplitHeader)
 
   def getLeftSplit =
-
-    val leftSplitHeader = new Label(s"Hidden elements:"):
-      font = Font("System", FontWeight.ExtraBold, 20)
-
     leftSideVBox.children += leftSplitHeader
-
     leftSideVBox
 
 
   def hideComponent(element: Node): Unit =
     element.style = ""
     leftSideVBox.children += hiddenElementHBox(element)
+    hiddenElements.addAll(element)
 
 
   private def hiddenElementHBox(element: Node): HBox =
@@ -87,11 +93,10 @@ object LeftSplit:
           duplicateButton
         )
 
-
-
     addButton.onAction = (event) =>
       addElementToPane(element)
       leftSideVBox.children.removeAll(hiddenElement)
+      hiddenElements.removeAll(element)
 
     duplicateButton.onAction = (event) =>
       duplicateElement(element)
@@ -124,7 +129,7 @@ object LeftSplit:
       case barChart: BarChart[String, Number] =>
         val name = barChart.getTitle.split(" ")(0)
         val color = barChart.getStylesheets.getFirst.split("#")(1).take(8)
-        duplicate = getVolymeBarChart(name, color)
+        duplicate = getVolumeBarChart(name, color)
 
       case tile: javafx.scene.layout.VBox =>
         val name = tile.children.head.asInstanceOf[javafx.scene.control.Label].text()

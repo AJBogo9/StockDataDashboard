@@ -1,14 +1,15 @@
 package dashboard.UIElements.FunctionalityElements
 
-import dashboard.UIElements.FunctionalityElements.Alerts.{getBarChartAlert, getPieChartAlert, getPortfolioTileAlert, getScatterPlotAlert, getStockTileAlert, getXYChartAlert}
+import dashboard.UIElements.FunctionalityElements.Alerts.{getBarChartAlert, getDashboardOpeningAlert, getDashboardSavingAlert, getPieChartAlert, getPortfolioTileAlert, getScatterPlotAlert, getStockTileAlert, getXYChartAlert}
 import scalafx.scene.control.{ButtonType, Menu, MenuBar, MenuItem}
 import dashboard.UI.charts
 import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
 import dashboard.UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
 import dashboard.UIElements.DataAnalysisTools.Tile.{getPortfolioTile, getStockTile}
 import dashboard.UIElements.DataAnalysisTools.TimeSeriesChart.getTimeSeriesChart
-import dashboard.UIElements.DataAnalysisTools.VolymeBarChart.getVolymeBarChart
+import dashboard.UIElements.DataAnalysisTools.VolumeBarChart.getVolumeBarChart
 import dashboard.UIElements.FunctionalityElements.RightSplit.addElementToPane
+import dashboard.lib.SaveFiles.{openDashboard, saveDashboard}
 
 object MenuElement:
 
@@ -18,14 +19,18 @@ object MenuElement:
     scatterPlotMenuItem,
     portfolioTileMenuItem,
     stockTileMenuItem,
-    xyChartMenuItem
+    xyChartMenuItem,
+    openMenuItem,
+    saveMenuItem
     ) = (
     MenuItem("Bar Chart"),
     MenuItem("Pie Chart"),
     MenuItem("Scatter Plot"),
     MenuItem("Portfolio tile"),
     MenuItem("Stock tile"),
-    MenuItem("XY chart")
+    MenuItem("XY chart"),
+    MenuItem("Open"),
+    MenuItem("Save")
   )
 
   private val (barChartAlert, barChartChoiceBox, barColorPicker) = getBarChartAlert
@@ -33,7 +38,7 @@ object MenuElement:
     val result = barChartAlert.showAndWait()
     val company = barChartChoiceBox.value.value
     val color = barColorPicker.value.apply().toString.drop(2)
-    val barChart = getVolymeBarChart(company, color)
+    val barChart = getVolumeBarChart(company, color)
     result match
       case Some(ButtonType.OK) => addElementToPane(barChart)
       case _ =>
@@ -86,12 +91,30 @@ object MenuElement:
       case Some(ButtonType.OK) => addElementToPane(scatterPlot)
       case _ =>
 
+  private val (dashboardSavingAlert, dashboardNameTextField) = getDashboardSavingAlert
+  saveMenuItem.onAction = (event) =>
+    val result = dashboardSavingAlert.showAndWait()
+    val name = dashboardNameTextField.text.apply()
+    result match
+      case Some(ButtonType.OK) => saveDashboard(name)
+      case _ =>
+
+  private val (dashboardOpeningAlert, dashboardNameSelector) = getDashboardOpeningAlert
+  openMenuItem.onAction = (event) =>
+    val result = dashboardOpeningAlert.showAndWait()
+    val name = dashboardNameSelector.value.value
+    result match
+      case Some(ButtonType.OK) => openDashboard(name)
+      case _ =>
+
+
+
   def getMenuElement: MenuBar =
 
     val fileOperations = new Menu("File"):
       items = Array(
-        MenuItem("Open"),
-        MenuItem("Save")
+        openMenuItem,
+        saveMenuItem
       )
 
     val createChart = new Menu("New"):

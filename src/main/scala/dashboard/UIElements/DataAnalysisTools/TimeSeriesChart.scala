@@ -21,7 +21,7 @@ object TimeSeriesChart:
     var dateValuePairs = timeSeries.map(date => (date._1, date._2("1. open"))).toSeq.sortBy(_._1)
 
     val (chartWidth, chartHeigth) = componentWidthAndHeigth
-    
+
     val chart = new LineChart(CategoryAxis("Date"), NumberAxis("Price")):
       title = s"$company stock value"
       legendSide = Side.Bottom
