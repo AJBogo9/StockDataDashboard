@@ -2,16 +2,16 @@ package dashboard.UIElements.DataAnalysisTools
 
 import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
 import dashboard.lib.Api.getTimeSeries
-import dashboard.lib.Utils.{getFirstDaysOfMonths, getYearData, xySeries, xySeriesScatter}
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
 import scalafx.scene.Scene
 import scalafx.scene.chart.XYChart.Series
-import scalafx.scene.chart.{NumberAxis, ScatterChart}
+import scalafx.scene.chart.{NumberAxis, ScatterChart, XYChart}
 
 import java.time.LocalDate
 import scala.:+
+import scala.util.Sorting.quickSort
 
 
 object ReturnScatterPlot:
@@ -23,10 +23,8 @@ object ReturnScatterPlot:
       val apiData = getTimeSeries(company)
       val dates = apiData.keys.toList
 
-      val firstDaysOfMonthsOfYear =
-        getFirstDaysOfMonths(dates).filter( date => LocalDate.parse(date).getYear == year)
-      val dataPairs: Array[(String, Double)] = firstDaysOfMonthsOfYear.map(date => (date, apiData(date)("1. open")))
-
+      val datesOfYear = dates.filter(_.contains(year.toString)).sorted
+      val dataPairs = datesOfYear.map( date => (date, apiData(date)("1. open")))
 
       var monthAndReturn: Array[(Int, Double)] = Array((1, 0.0))
       for i <- 1 until dataPairs.length do
@@ -37,6 +35,8 @@ object ReturnScatterPlot:
 
 
       companyData = companyData :+ xySeriesScatter(s"$company return", monthAndReturn)
+
+
 
     val chartData = ObservableBuffer.from(companyData)
 
@@ -51,3 +51,9 @@ object ReturnScatterPlot:
 
     chart
 
+
+  def xySeriesScatter(name: String, data: Seq[(Int, Double)]) =
+    val dataInObservableBuffer = ObservableBuffer.from(
+      data.map((x, y) => XYChart.Data[Number, Number](x, y))
+    )
+    XYChart.Series[Number, Number](name, dataInObservableBuffer)

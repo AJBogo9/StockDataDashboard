@@ -23,22 +23,7 @@ import scalafx.scene.text.{Font, FontWeight}
 
 object UI extends JFXApp3:
 
-  val charts = new VBox:
-    children = Array[BorderPane]()
-    alignment = Pos.Center
-
   def start() =
-
-
-    val nvidiaTile = getStockTile("Nvidia")
-    val appleTile = getStockTile("Apple")
-    val portfolioTile = getPortfolioTile("portfolio1")
-
-    val rightSplitWithScrollPane = new ScrollPane:
-      content = charts
-
-
-
 
 
     val menu = getMenuElement
@@ -53,25 +38,7 @@ object UI extends JFXApp3:
     val mainVBox = new VBox:
       children = Array(menu, toolBar, splitPane)
 
-
-
     stage = new JFXApp3.PrimaryStage:
       title = "Personal Portfolio Dashboard"
       scene = new Scene(700, 500):
         root = mainVBox
-
-
-
-
-
-
-
-
-
-
-
-    refreshButton.onAction = (event) =>
-      println("The button is working!!")
-      getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Apple")
-      getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Microsoft")
-      getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Nvidia")

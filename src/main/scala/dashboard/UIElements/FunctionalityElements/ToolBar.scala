@@ -3,6 +3,7 @@ package dashboard.UIElements.FunctionalityElements
 import dashboard.UIElements.FunctionalityElements.RightSplit.{pane, removeSelectedComponents}
 import scalafx.scene.control.{Button, Label, Separator, ToggleButton, ToolBar}
 import dashboard.UIElements.FunctionalityElements.LeftSplit.hideComponent
+import dashboard.lib.Api.getDataFromAlphavantageAndSave
 import scalafx.beans.Observable.sfxObservable2jfx
 import scalafx.collections.ObservableBuffer
 import scalafx.scene.Node
@@ -13,14 +14,12 @@ object ToolBar:
     selectButton,
     hideButton,
     removeButton,
-    refreshButton,
-    lastRefreshed
+    refreshButton
   ) = (
     ToggleButton("Select"),
     Button("Hide"),
     Button("Remove"),
-    Button("Refresh"),
-    Label("Last Refreshed: DUNNO??")
+    Button("Refresh")
   )
 
   hideButton.onAction = (event) =>
@@ -29,7 +28,12 @@ object ToolBar:
 
   removeButton.onAction = (event) =>
     removeSelectedComponents()
-
+    
+  refreshButton.onAction = (event) =>
+    println("The button is working!!")
+    getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Apple")
+    getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Microsoft")
+    getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Nvidia")
 
   def getToolBarElement: ToolBar =
 
@@ -40,8 +44,7 @@ object ToolBar:
         hideButton,
         removeButton,
         new Separator,
-        refreshButton,
-        lastRefreshed
+        refreshButton
       )
 
     toolBar

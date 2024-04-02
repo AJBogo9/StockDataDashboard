@@ -44,7 +44,8 @@ import scalafx.collections.ObservableBuffer
 import scala.collection.mutable.Buffer
 
 object LeftSplit:
-
+  
+  
   private val leftSideVBox = new VBox
   private var hiddenElements: ObservableBuffer[Node] = ObservableBuffer()
   private val leftSplitHeader = new Label(s"Hidden elements:"):

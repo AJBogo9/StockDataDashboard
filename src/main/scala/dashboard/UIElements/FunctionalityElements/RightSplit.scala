@@ -32,11 +32,15 @@ import scala.util.control.Breaks.breakable
 
 object RightSplit:
 
-  private val pane = new Pane
+  // TODO: bugs when selecting components
+  // - information alerts do not work after rectangle selection tool is activated
+  // - dates do not show correctly after background is painted blue
+
   private var paneSlotsOccupied = Buffer(
     Buffer(false, false, false, false),
     Buffer(false, false, false, false)
   )
+
   private val (width, heigth) = (300.0, 290.0)
 
   private val selectionRectangle = new Rectangle:
@@ -45,13 +49,14 @@ object RightSplit:
     strokeDashArray = List(3d, 3d)
     visible = false
 
-
   // this button is used to ensure that pane reaches over the whole window.
-  // if this button is not in place and the pane is empty, the pane will only be the
-  // size of its componets sizes
-  val buttonFarAway = new Button("█▄ █ ▀█▀")
+  private val buttonFarAway = new Button("█▄ █ ▀█▀")
   buttonFarAway.layoutX = 9999
   buttonFarAway.layoutY = 9999
+
+  private val pane = new Pane:
+    children = Array(selectionRectangle, buttonFarAway)
+
   def getPane = pane
 
   def clearRightSplit() =
@@ -63,17 +68,14 @@ object RightSplit:
   
   def getRightSplit =
 
-    // Create a rectangle to represent the selection area
-
-
     var startX: Double = 0
     var startY: Double = 0
 
     pane.onMousePressed = (event) =>
       if selectButton.selected() then
         selectionRectangle.visible = true
-        startX = event.x
-        startY = event.y
+        startX = event.getX
+        startY = event.getY
         selectionRectangle.x = startX
         selectionRectangle.y = startY
         selectionRectangle.width = 0
@@ -88,8 +90,8 @@ object RightSplit:
     pane.onMouseDragged = (event) =>
       if selectButton.selected() then
 
-        var currentX = event.x
-        var currentY = event.y
+        var currentX = event.getX
+        var currentY = event.getY
         val width = currentX - startX
         val height = currentY - startY
 
@@ -99,13 +101,11 @@ object RightSplit:
         selectionRectangle.x = if (width < 0) currentX else startX
         selectionRectangle.y = if (height < 0) currentY else startY
 
-
-        // Check for intersection with buttons in the pane and mark them as selected
         for (child <- pane.children) do
           child match
-            case button: javafx.scene.Node =>
-              button.style =
-                if (button.getBoundsInParent.intersects(selectionRectangle.getBoundsInParent))
+            case element: javafx.scene.Node =>
+              element.style =
+                if (element.getBoundsInParent.intersects(selectionRectangle.getBoundsInParent))
                   "-fx-background-color: blue;"
                 else ""
 
@@ -113,12 +113,10 @@ object RightSplit:
       if selectButton.selected() then
         selectionRectangle.visible = false
 
-    pane.children.addAll(selectionRectangle, buttonFarAway)
-
     pane
 
   def removeSelectedComponents() =
-    val selectedComponents = pane.children.filter(_.style().contains("blue"))
+    val selectedComponents = pane.children.filter(_.style().contains("-fx-background-color: blue;"))
     selectedComponents.removeAll(selectionRectangle)
     for component <- selectedComponents do
       val row = (component.getLayoutY / heigth).toInt

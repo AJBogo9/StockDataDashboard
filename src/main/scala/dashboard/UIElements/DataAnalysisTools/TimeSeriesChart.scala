@@ -1,8 +1,8 @@
 package dashboard.UIElements.DataAnalysisTools
 
+import dashboard.UI.stage
 import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
 import dashboard.lib.Api.getTimeSeries
-import dashboard.lib.Utils.xySeries
 import geny.Generator.from
 import scalafx.application.JFXApp3
 import scalafx.collections.ObservableBuffer
@@ -12,6 +12,8 @@ import scalafx.scene.chart.*
 import scalafx.Includes.observableList2ObservableBuffer
 import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 import javafx.scene.paint.Color
+import scalafx.scene.control.Alert
+import scalafx.scene.control.Alert.AlertType
 
 
 
@@ -27,9 +29,25 @@ object TimeSeriesChart:
       legendSide = Side.Bottom
       prefWidth = chartWidth
       prefHeight = chartHeigth
-      data = ObservableBuffer(
-        xySeries(company, dateValuePairs)
+
+    val series = new XYChart.Series[String, Number]:
+      name = company
+      data = ObservableBuffer.from(
+        dateValuePairs.map( (x, y) => XYChart.Data[String, Number](x, y) )
       )
+
+    chart.getData.add(series)
+
+    series.getData.forEach { data =>
+      data.getNode.setOnMouseClicked { event =>
+        val alert = new Alert(AlertType.Information):
+          initOwner(stage)
+          title = "Data point information"
+          headerText = s"date: ${data.getXValue}\nprice: ${data.getYValue}"
+
+        alert.showAndWait()
+      }
+    }
 
     chart.getStylesheets().setAll(
                     s"""

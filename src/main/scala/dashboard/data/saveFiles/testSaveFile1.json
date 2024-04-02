@@ -1,49 +1,55 @@
 {
   "modelSaveFile": {
-    "content": {
-
-      "pie chart": {
-        "portfolio": [
-          "portfolio1"
-        ],
+    "shown": [
+      {
+        "type": "pie chart",
+        "portfolio": "portfolio1"
+      },
+      {
+        "type": "scatter plot",
+        "company1": "Apple",
+        "company2": "Microsoft",
+        "year": "1929"
+      },
+      {
+        "type": "stock tile",
+        "company": "Apple"
+      },
+      {
+        "type": "portfolio tile",
+        "portfolio": "Apple",
         "color": ""
       },
-
-      "scatter plot": {
-        "company": [
-          "Apple",
-          "Microsoft"
-        ],
-        "color": ""
-      },
-
-      "stock tile": {
-        "company": [
-          "Apple"
-        ],
-        "color": ""
-      },
-
-      "portfolio tile": {
-        "portfolio": [
-          "Apple"
-        ],
-        "color": ""
-      },
-
-      "xy chart": {
-        "company": [
-          "Apple"
-        ],
+      {
+        "type": "xy chart",
+        "company": "Apple",
         "color": "000000ff"
       },
-
-      "bar chart": {
-        "company": [
-          "Apple"
-        ],
+      {
+        "type": "bar chart",
+        "company": "Apple",
         "color": "000000ff"
       }
-    }
+    ],
+    "hidden": [
+      {
+        "type": "stock tile",
+        "company": "Apple",
+      },
+      {
+        "type": "portfolio tile",
+        "portfolio": "Apple",
+      },
+      {
+        "type": "xy chart",
+        "company": "Apple",
+        "color": "000000ff"
+      },
+      {
+        "type": "bar chart",
+        "company": "Apple",
+        "color": "000000ff"
+      },
+    ]
   }
 }

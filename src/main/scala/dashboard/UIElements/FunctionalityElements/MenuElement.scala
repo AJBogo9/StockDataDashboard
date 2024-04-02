@@ -2,7 +2,6 @@ package dashboard.UIElements.FunctionalityElements
 
 import dashboard.UIElements.FunctionalityElements.Alerts.{getBarChartAlert, getDashboardOpeningAlert, getDashboardSavingAlert, getPieChartAlert, getPortfolioTileAlert, getScatterPlotAlert, getStockTileAlert, getXYChartAlert}
 import scalafx.scene.control.{ButtonType, Menu, MenuBar, MenuItem}
-import dashboard.UI.charts
 import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
 import dashboard.UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
 import dashboard.UIElements.DataAnalysisTools.Tile.{getPortfolioTile, getStockTile}
