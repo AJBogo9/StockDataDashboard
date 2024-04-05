@@ -7,11 +7,11 @@ import dashboard.UIElements.DataAnalysisTools.Tile.{getPortfolioTile, getStockTi
 import dashboard.UIElements.DataAnalysisTools.TimeSeriesChart.getTimeSeriesChart
 import dashboard.UIElements.DataAnalysisTools.VolumeBarChart.getVolumeBarChart
 import dashboard.UIElements.FunctionalityElements.RightSplit.addElementToPane
-import dashboard.fileManagement.SaveAndOpenDashboards.OpenDashboard.openDashboard
+import dashboard.fileManagement.SaveAndOpenDashboards.OpenDashboard.{getDashboardNames, openDashboard}
 import dashboard.fileManagement.SaveAndOpenDashboards.SaveDashboard.saveDashboard
 import dashboard.UIElements.FunctionalityElements.Alerts.PieChartAlert.getPieChartAlert
 import dashboard.UIElements.FunctionalityElements.Alerts.ScatterPlotAlert.getScatterPlotAlert
-import dashboard.UIElements.FunctionalityElements.Alerts.DashboardSavingAlert.getDashboardSavingAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.DashboardSavingAlert.{emptyTextField, getDashboardSavingAlert}
 import dashboard.UIElements.FunctionalityElements.Alerts.BarChartAlert.getBarChartAlert
 import dashboard.UIElements.FunctionalityElements.Alerts.PortfolioTileAlert.getPortfolioTileAlert
 import dashboard.UIElements.FunctionalityElements.Alerts.StockTileAlert.getStockTileAlert
@@ -101,16 +101,19 @@ object MenuElement:
   private val (dashboardSavingAlert, dashboardNameTextField) = getDashboardSavingAlert
   saveMenuItem.onAction = (event) =>
     val result = dashboardSavingAlert.showAndWait()
-    val name = dashboardNameTextField.text.apply()
-    result match
-      case Some(ButtonType.OK) => saveDashboard(name)
+    val dashboardName = dashboardNameTextField.text.apply()
+    (result, dashboardName) match
+      case (Some(ButtonType.OK), name: String)
+        if (name != "" && !getDashboardNames.contains(name)) =>
+          saveDashboard(name)
+          emptyTextField()
       case _ =>
 
   private val (dashboardOpeningAlert, dashboardNameSelector) = getDashboardOpeningAlert
   openMenuItem.onAction = (event) =>
     val result = dashboardOpeningAlert.showAndWait()
-    val name = dashboardNameSelector.value.value
-    (result, name) match
+    val dashboardName = dashboardNameSelector.value.value
+    (result, dashboardName) match
       case (Some(ButtonType.OK), name: String) => openDashboard(name)
       case _ =>
 
