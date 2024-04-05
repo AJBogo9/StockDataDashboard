@@ -12,6 +12,7 @@ libraryDependencies += "com.lihaoyi" %% "upickle" % "3.2.0"
 libraryDependencies += "com.lihaoyi" %% "os-lib" % "0.9.3"
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.17"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.17" % "test"
+libraryDependencies += "org.controlsfx" % "controlsfx" % "11.2.0"
 
 
 

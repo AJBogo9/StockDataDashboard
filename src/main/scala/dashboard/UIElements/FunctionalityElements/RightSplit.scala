@@ -1,43 +1,20 @@
 package dashboard.UIElements.FunctionalityElements
 
-import dashboard.UIElements.DataAnalysisTools.Tile.getPortfolioTile
-import scalafx.application.JFXApp3
-import scalafx.scene.Scene
+import scalafx.scene.shape.Rectangle
+import dashboard.UIElements.FunctionalityElements.LeftSplit.hideComponent
+import dashboard.UIElements.FunctionalityElements.ToolBar.selectButton
+import scalafx.Includes.jfxNode2sfx
+import scalafx.collections.ObservableBuffer
+import scalafx.scene.control.Button
 import scalafx.scene.layout.Pane
 import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
-import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
-import dashboard.UIElements.DataAnalysisTools.Tile.getPortfolioTile
-import dashboard.UIElements.FunctionalityElements.LeftSplit.hideComponent
-import dashboard.UIElements.FunctionalityElements.MenuElement.getMenuElement
-import dashboard.UIElements.FunctionalityElements.ToolBar.selectButton
-import scalafx.Includes.{jfxMouseEvent2sfx, jfxNode2sfx}
-import scalafx.application.{JFXApp, JFXApp3}
-import scalafx.collections.ObservableBuffer
-import scalafx.scene.Scene
-import scalafx.scene.SceneIncludes.jfxNode2sfx
-import scalafx.scene.control.Button
-import scalafx.scene.input.InputIncludes.jfxMouseEvent2sfx
-import scalafx.scene.input.MouseEvent
-import scalafx.scene.layout.{Pane, VBox}
-import scalafx.scene.paint.Color
-import scalafx.scene.shape.Rectangle
 import javafx.scene.Node
-
-import scala.Console.println
 import scala.collection.mutable.Buffer
-import scala.util.boundary.break
-import scala.util.control.Breaks.breakable
 
 
 object RightSplit:
 
-  // TODO: bugs when selecting components
-  // - information alerts do not work after rectangle selection tool is activated
-  // - dates do not show correctly after background is painted blue
-
   private var paneSlotsOccupied = Buffer(
-    Buffer(false, false, false, false),
     Buffer(false, false, false, false)
   )
 

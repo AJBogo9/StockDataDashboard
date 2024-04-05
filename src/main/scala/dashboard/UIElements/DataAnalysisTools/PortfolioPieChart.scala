@@ -1,38 +1,42 @@
 package dashboard.UIElements.DataAnalysisTools
 
 import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
-import dashboard.lib.Api.{getPortfolioData, getTimeSeries}
+import dashboard.fileManagement.Api.ReadApiData.{getPortfolioData, getTimeSeries}
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
 import scalafx.scene.chart.PieChart
-import scalafx.scene.control.Alert.AlertType
-import scalafx.scene.control.{Alert, ButtonType}
-
 import scala.collection.mutable.Map
 
 object PortfolioPieChart:
 
+  /**
+   * takes a portfolio name as a parameter and returns a pie chart object with the portfolios data
+   * @param portfolioName name of portfolio file
+   * @return PieChart
+   */
   def getPieChart(portfolioName: String) =
-    val portfolioData: Map[String, Map[String, String]] = 
-      getPortfolioData(portfolioName)
+
+    // get portfolio data
+    val portfolioData: Map[String, Map[String, String]] = getPortfolioData(portfolioName)
     val stockNames = portfolioData.keys
-    var dataPairs: Seq[(String, Double)] = Seq()
+
+    // first value is company's name and second is the owned stock's present value
+    var nameAndValue: Seq[(String, Double)] = Seq()
     for key <- stockNames do
-      val timeSeriesData: Map[String, Map[String, Double]] = getTimeSeries(key)
-      val dates: Array[String] = timeSeriesData.keys.toArray.sorted
-      val latestDate = dates.last
+      val timeSeriesData = getTimeSeries(key)
+      val latestDate = timeSeriesData.keys.max
       val price: Double = timeSeriesData(latestDate)("1. open")
-      dataPairs = dataPairs :+ (key, (portfolioData(key)("Quantity").toInt * price))
+      nameAndValue = nameAndValue :+ (key, (portfolioData(key)("Quantity").toInt * price))
 
+    // create pie chart
     val (chartWidth, chartHeigth) = componentWidthAndHeigth
-
     val pieChart = new PieChart:
       title = s"Portfolio pie chart $portfolioName"
       clockwise = false
       legendSide = Side.Bottom
       prefWidth = chartWidth
       prefHeight = chartHeigth
-      data = ObservableBuffer.from(dataPairs.map({ 
+      data = ObservableBuffer.from(nameAndValue.map({
         case (x, y) => PieChart.Data(x, y)
       }))
 

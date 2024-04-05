@@ -3,45 +3,22 @@ package dashboard.UIElements.FunctionalityElements
 import dashboard.UIElements.DataAnalysisTools.Tile.*
 import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
 import dashboard.UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
-import dashboard.UIElements.DataAnalysisTools.Tile.*
 import dashboard.UIElements.DataAnalysisTools.TimeSeriesChart.getTimeSeriesChart
 import dashboard.UIElements.DataAnalysisTools.VolumeBarChart.getVolumeBarChart
 import javafx.scene.chart.{BarChart, Chart, LineChart, PieChart, ScatterChart}
 import javafx.scene.Node
-import javafx.scene.layout.BorderPane
-import scalafx.scene.chart.Chart
 import scalafx.scene.control.{Button, Label, Separator}
-import scalafx.scene.layout.{HBox, Pane, VBox}
+import scalafx.scene.layout.{HBox, VBox}
 import scalafx.scene.text.{Font, FontWeight}
 import scalafx.Includes.jfxChart2sfx
-import scalafx.scene.SceneIncludes.jfxChart2sfx
-import scalafx.scene.chart.ChartIncludes.jfxChart2sfx
-import scalafx.Includes.jfxBorderPane2sfx
-import scalafx.scene.SceneIncludes.jfxBorderPane2sfx
-import scalafx.scene.layout.LayoutIncludes.jfxBorderPane2sfx
-import scalafx.Includes.jfxVBox2sfx
 import scalafx.scene.SceneIncludes.jfxVBox2sfx
-import scalafx.scene.layout.LayoutIncludes.jfxVBox2sfx
-import scalafx.Includes.jfxPane2sfx
 import scalafx.geometry.Orientation
-import scalafx.scene.SceneIncludes.jfxPane2sfx
-import scalafx.scene.layout.LayoutIncludes.jfxPane2sfx
-import scalafx.Includes.jfxLabel2sfx
-import scalafx.scene.SceneIncludes.jfxLabel2sfx
 import scalafx.scene.control.ControlIncludes.jfxLabel2sfx
-import scalafx.Includes.jfxLabeled2sfx
-import scalafx.scene.SceneIncludes.jfxLabeled2sfx
-import scalafx.scene.control.ControlIncludes.jfxLabeled2sfx
 import dashboard.UIElements.FunctionalityElements.RightSplit.addElementToPane
-import dashboard.lib.Api.getTimeSeries
-import javafx.scene.paint.Color
-import scalafx.Includes.jfxNode2sfx
 import scalafx.scene.SceneIncludes.jfxNode2sfx
 import scalafx.Includes.observableList2ObservableBuffer
-import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
 import scalafx.collections.ObservableBuffer
 
-import scala.collection.mutable.Buffer
 
 object LeftSplit:
   

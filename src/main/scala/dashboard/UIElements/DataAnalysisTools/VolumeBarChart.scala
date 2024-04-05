@@ -2,22 +2,17 @@ package dashboard.UIElements.DataAnalysisTools
 
 import dashboard.UI.stage
 import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
-import dashboard.lib.Api.getTimeSeries
-import scalafx.application.JFXApp3
+import dashboard.fileManagement.Api.ReadApiData.getTimeSeries
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
-import scalafx.scene.Scene
 import scalafx.scene.chart.{BarChart, CategoryAxis, NumberAxis, XYChart}
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
 
-import scala.util.Sorting.quickSort
-
 object VolumeBarChart:
   def getVolumeBarChart(company: String, color: String) =
     val ApiData = getTimeSeries(company)
-    val dates = ApiData.keys.toArray
-    quickSort(dates)
+    val dates = ApiData.keys.toArray.sorted
     var datesAndVolume: Seq[(String, Double)] = Seq()
     for date <- dates do
       datesAndVolume = datesAndVolume :+ (date, ApiData(date)("5. volume"))

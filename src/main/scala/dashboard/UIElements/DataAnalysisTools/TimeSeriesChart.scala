@@ -2,19 +2,12 @@ package dashboard.UIElements.DataAnalysisTools
 
 import dashboard.UI.stage
 import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
-import dashboard.lib.Api.getTimeSeries
-import geny.Generator.from
-import scalafx.application.JFXApp3
+import dashboard.fileManagement.Api.ReadApiData.getTimeSeries
 import scalafx.collections.ObservableBuffer
 import scalafx.geometry.Side
-import scalafx.scene.Scene
 import scalafx.scene.chart.*
-import scalafx.Includes.observableList2ObservableBuffer
-import scalafx.collections.CollectionIncludes.observableList2ObservableBuffer
-import javafx.scene.paint.Color
 import scalafx.scene.control.Alert
 import scalafx.scene.control.Alert.AlertType
-
 
 
 object TimeSeriesChart:

@@ -1,54 +1,14 @@
-package dashboard.lib
+package dashboard.fileManagement.Api
 
+import dashboard.fileManagement.Api.SaveApiData.{companySymbol, timeSeriesDstFolder}
 import ujson.Value
 
-import java.io.FileWriter
-import java.nio.file.{Files, Paths}
-import java.time.LocalDate
 import scala.collection.mutable
 import scala.collection.mutable.Map
 import scala.io.Source
 
-object Api:
-
-  // private val filesRefreshedToday: Boolean = LocalDate.parse(getMetaData("Apple")("3. Last Refreshed")) == LocalDate.now().minusDays(1)
-  private val apiKey: String =
-    val apiKeyFile = "apiKey.txt"
-    val source = Source.fromFile(apiKeyFile)
-    val key = source.getLines().mkString
-    source.close()
-    key
-
-  private val timeSeriesDstFolder = "src/main/scala/dashboard/data/timeSeries"
-
-  /**
-   * Does an API call to https://www.alphavantage.co/documentation/ and saves the data
-   * into a file for later use
-   * @param function The program works only with "TIME_SERIES_MONTHLY" at the moment
-   * @param companyName Company name starting with a capital letter
-   * @return
-   */
-  def getDataFromAlphavantageAndSave(function: String, companyName: String): String =
-    // if !filesRefreshedToday then // does not use up API calls if data is up to date
-    val symbol = companySymbol(companyName)
-
-    // get data from api
-    val urlMonthly = s"https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=$symbol&apikey=$apiKey"
-    val html = Source.fromURL(urlMonthly)
-    val text = html.mkString
-
-    // Create directory
-    Files.createDirectories(Paths.get(timeSeriesDstFolder))
-
-    // Write to file
-    val file = s"$timeSeriesDstFolder/${function}_$symbol.json"
-    val fw = new FileWriter(file, false)
-    fw.write(text)
-    fw.close()
-
-    text
-
-
+object ReadApiData:
+  
   def readTextFromFile(src: String): String =
     val bufferedSource = Source.fromFile(src)
     val text = bufferedSource.mkString
@@ -91,7 +51,7 @@ object Api:
     val portfolioSrc = s"src/main/scala/dashboard/data/portfolios/$portfolioName.json"
     val rawText = readTextFromFile(portfolioSrc)
     val data = ujson.read(rawText).obj
-    var ret: Map[String, Map[String, String]]= Map()
+    var ret: Map[String, Map[String, String]] = Map()
     for key <- data.keys do
       val dataObj: Map[String, Value] = data(key).obj
       val mapped: Map[String, String] = Map()
@@ -99,7 +59,3 @@ object Api:
         mapped += key -> dataObj(key).str
       ret += key -> mapped
     ret
-
-  def companySymbol(company: String): String =
-    val symbols = Map("Apple" -> "AAPL", "Nvidia" -> "NVDA", "Microsoft" -> "MSFT")
-    symbols(company)

@@ -1,6 +1,5 @@
 package dashboard.UIElements.FunctionalityElements
 
-import dashboard.UIElements.FunctionalityElements.Alerts.{getBarChartAlert, getDashboardOpeningAlert, getDashboardSavingAlert, getPieChartAlert, getPortfolioTileAlert, getScatterPlotAlert, getStockTileAlert, getXYChartAlert}
 import scalafx.scene.control.{ButtonType, Menu, MenuBar, MenuItem}
 import dashboard.UIElements.DataAnalysisTools.PortfolioPieChart.getPieChart
 import dashboard.UIElements.DataAnalysisTools.ReturnScatterPlot.getScatterPlot
@@ -8,7 +7,16 @@ import dashboard.UIElements.DataAnalysisTools.Tile.{getPortfolioTile, getStockTi
 import dashboard.UIElements.DataAnalysisTools.TimeSeriesChart.getTimeSeriesChart
 import dashboard.UIElements.DataAnalysisTools.VolumeBarChart.getVolumeBarChart
 import dashboard.UIElements.FunctionalityElements.RightSplit.addElementToPane
-import dashboard.lib.SaveFiles.{openDashboard, saveDashboard}
+import dashboard.fileManagement.SaveAndOpenDashboards.OpenDashboard.openDashboard
+import dashboard.fileManagement.SaveAndOpenDashboards.SaveDashboard.saveDashboard
+import dashboard.UIElements.FunctionalityElements.Alerts.PieChartAlert.getPieChartAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.ScatterPlotAlert.getScatterPlotAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.DashboardSavingAlert.getDashboardSavingAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.BarChartAlert.getBarChartAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.PortfolioTileAlert.getPortfolioTileAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.StockTileAlert.getStockTileAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.XYChartAlert.getXYChartAlert
+import dashboard.UIElements.FunctionalityElements.Alerts.DashboardOpeningAlert.getDashboardOpeningAlert
 
 object MenuElement:
 

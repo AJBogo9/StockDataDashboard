@@ -19,6 +19,7 @@
     <orderEntry type="library" name="sbt: com.lihaoyi:upickle-core_3:3.2.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:upickle-implicits_3:3.2.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.lihaoyi:upickle_3:3.2.0:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.controlsfx:controlsfx:11.2.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.openjfx:javafx-base:20:jar" level="project" />
     <orderEntry type="library" name="sbt: org.openjfx:javafx-base:20:win:jar" level="project" />
     <orderEntry type="library" name="sbt: org.openjfx:javafx-controls:20:jar" level="project" />

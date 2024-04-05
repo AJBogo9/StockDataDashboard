@@ -1,15 +1,12 @@
 package dashboard.UIElements.DataAnalysisTools
 
 import dashboard.UIElements.FunctionalityElements.RightSplit.componentWidthAndHeigth
-import dashboard.lib.Api.{getPortfolioData, getTimeSeries}
-import scalafx.application.JFXApp3
-import scalafx.geometry.{Orientation, Pos}
-import scalafx.scene.Scene
-import scalafx.scene.control.{Button, Label, Separator}
-import scalafx.scene.layout.{BorderPane, Pane, VBox}
+import dashboard.fileManagement.Api.ReadApiData.{getPortfolioData, getTimeSeries}
+import scalafx.geometry.Pos
+import scalafx.scene.control.Label
+import scalafx.scene.layout.VBox
 import scalafx.scene.text.{Font, FontWeight}
 
-import scala.:+
 import scala.math.sqrt
 
 object Tile:

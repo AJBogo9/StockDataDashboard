@@ -1,12 +1,9 @@
 package dashboard.UIElements.FunctionalityElements
 
-import dashboard.UIElements.FunctionalityElements.RightSplit.{pane, removeSelectedComponents}
-import scalafx.scene.control.{Button, Label, Separator, ToggleButton, ToolBar}
+import dashboard.UIElements.FunctionalityElements.RightSplit.removeSelectedComponents
+import scalafx.scene.control.{Button, Separator, ToggleButton, ToolBar}
 import dashboard.UIElements.FunctionalityElements.LeftSplit.hideComponent
-import dashboard.lib.Api.getDataFromAlphavantageAndSave
-import scalafx.beans.Observable.sfxObservable2jfx
-import scalafx.collections.ObservableBuffer
-import scalafx.scene.Node
+import dashboard.fileManagement.Api.SaveApiData.getDataFromAlphavantageAndSave
 
 object ToolBar:
 
