@@ -21,74 +21,98 @@ import scalafx.collections.ObservableBuffer
 
 
 object LeftSplit:
-  
-  
-  private val leftSideVBox = new VBox
-  private var hiddenElements: ObservableBuffer[Node] = ObservableBuffer()
+
+
+  /**
+   *                      leftSideVBox
+   *                           |
+   *     leftSplitHeader                   componentList (HBox)
+   *                                             |
+   *                 hiddenElementNames      separator        hiddenElementButtons
+   *                        |                                            |
+   *
+   *
+   */
+
+  private val hiddenElementNames = new VBox(8)
+  private val separator = new Separator:
+    orientation = Orientation.Vertical
+  private val hiddenElementButtons = new VBox
+  private val componentList = new HBox(5):
+    children = Array(hiddenElementNames, separator, hiddenElementButtons)
+
   private val leftSplitHeader = new Label(s"Hidden elements:"):
     font = Font("System", FontWeight.ExtraBold, 20)
-  
-  def getLeftVbox = leftSideVBox
+  private val leftSideVBox = new VBox:
+    children = Array(leftSplitHeader, componentList)
+
+  private var hiddenElements: ObservableBuffer[Node] = ObservableBuffer()
+
   def getHiddenElements = hiddenElements
 
   def clearLeftSplit() =
-    getLeftVbox.children = Array[scalafx.scene.Node](leftSplitHeader)
+    hiddenElementNames.children = Array[scalafx.scene.Node]()
+    hiddenElementButtons.children = Array[scalafx.scene.Node]()
     hiddenElements = ObservableBuffer(leftSplitHeader)
 
-  def getLeftSplit =
-    leftSideVBox.children += leftSplitHeader
-    leftSideVBox
-
+  def getLeftSplit = leftSideVBox
 
   def hideComponent(element: Node): Unit =
     element.style = ""
-    leftSideVBox.children += hiddenElementHBox(element)
+    addElementToLeftSplit(element)
     hiddenElements.addAll(element)
 
-
-  private def hiddenElementHBox(element: Node): HBox =
-    val hiddenElement = new HBox
-    val addButton = new Button("Add")
-    val duplicateButton = new Button("Duplicate")
-
-    val separator = new Separator:
-      orientation = Orientation.Vertical
-
+  private def addElementToLeftSplit(element: Node) =
     element match
       case chart: javafx.scene.chart.Chart =>
-        hiddenElement.children = Array(
-          Label(s" - ${chart.title.value} "),
-          separator,
-          addButton,
-          duplicateButton
-        )
+        val label = Label(s" - ${chart.title.value}")
+        hiddenElementNames.children.add(label)
+
+        val addButton = new Button("Add")
+        val duplicateButton = new Button("Duplicate")
+        val buttons = new HBox(3):
+          children = Array(addButton, duplicateButton)
+        hiddenElementButtons.children.add(buttons)
+
+        addButton.onAction = (event) =>
+          addElementToPane(element)
+          hiddenElementNames.children.remove(label)
+          hiddenElementButtons.children.remove(buttons)
+          hiddenElements.remove(element)
+
+        duplicateButton.onAction = (event) =>
+          duplicateElement(element)
+
+
+
       case tile: javafx.scene.layout.VBox =>
         val name = tile.children.head.asInstanceOf[javafx.scene.control.Label].text()
-        hiddenElement.children = Array(
-          Label(s" - $name label "),
-          separator,
-          addButton,
-          duplicateButton
-        )
+        val label = Label(s" - $name label")
+        hiddenElementNames.children.add(label)
 
-    addButton.onAction = (event) =>
-      addElementToPane(element)
-      leftSideVBox.children.removeAll(hiddenElement)
-      hiddenElements.removeAll(element)
+        val addButton = new Button("Add")
+        val duplicateButton = new Button("Duplicate")
+        val buttons = new HBox(3):
+          children = Array(addButton, duplicateButton)
+        hiddenElementButtons.children.add(buttons)
 
-    duplicateButton.onAction = (event) =>
-      duplicateElement(element)
+        addButton.onAction = (event) =>
+          addElementToPane(element)
+          hiddenElementNames.children.remove(label)
+          hiddenElementButtons.children.remove(buttons)
+          hiddenElements.remove(element)
 
-    hiddenElement
+        duplicateButton.onAction = (event) =>
+          duplicateElement(element)
 
 
   private def duplicateElement(element: Node) =
-    var duplicate = element
+    var duplicate: Option[Node] = None
 
     element match
       case pieChart: PieChart =>
         val name = pieChart.getTitle.split(" ")(3)
-        duplicate = getPieChart(name)
+        duplicate = Some(getPieChart(name))
 
       case scatterPlot: ScatterChart[Number, Number] =>
         val year = scatterPlot.getTitle.split(" ")(5).toInt
@@ -97,24 +121,28 @@ object LeftSplit:
         for serie <- companyData do
             val companyName = serie.getName.split(" ").head
             companyNames = companyNames :+ companyName
-        duplicate = getScatterPlot(companyNames, year)
+        duplicate = Some(getScatterPlot(companyNames, year))
 
       case xyChart: LineChart[String, Number] =>
         val name = xyChart.getTitle.split(" ")(0)
         val color = xyChart.getStylesheets.getFirst.split("#")(1).take(8)
-        duplicate = getTimeSeriesChart(name, color)
+        duplicate = Some(getTimeSeriesChart(name, color))
 
       case barChart: BarChart[String, Number] =>
         val name = barChart.getTitle.split(" ")(0)
         val color = barChart.getStylesheets.getFirst.split("#")(1).take(8)
-        duplicate = getVolumeBarChart(name, color)
+        duplicate = Some(getVolumeBarChart(name, color))
 
       case tile: javafx.scene.layout.VBox =>
         val name = tile.children.head.asInstanceOf[javafx.scene.control.Label].text()
         val tileElementCount = tile.children.length
         if tileElementCount == 2 then
-          duplicate = getPortfolioTile(name)
+          duplicate = Some(getPortfolioTile(name))
         else if tileElementCount == 5 then
-          duplicate = getStockTile(name)
+          duplicate = Some(getStockTile(name))
 
-    hideComponent(duplicate)
+      case _ =>
+
+    duplicate match
+      case Some(element: javafx.scene.Node) => hideComponent(element)
+      case None =>

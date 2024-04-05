@@ -15,6 +15,7 @@ import scala.collection.mutable.Buffer
 object RightSplit:
 
   private var paneSlotsOccupied = Buffer(
+    Buffer(false, false, false, false),
     Buffer(false, false, false, false)
   )
 

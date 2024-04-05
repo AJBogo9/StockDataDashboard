@@ -18,7 +18,6 @@ object Tile:
     val maxValue = stockOpenValuesMap.maxBy(_._2)
     val minValue = stockOpenValuesMap.minBy(_._2)
 
-
     var index = 1
     val returnCount = stockOpenValuesMap.size - 1
 

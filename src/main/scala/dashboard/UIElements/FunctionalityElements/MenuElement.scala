@@ -110,8 +110,8 @@ object MenuElement:
   openMenuItem.onAction = (event) =>
     val result = dashboardOpeningAlert.showAndWait()
     val name = dashboardNameSelector.value.value
-    result match
-      case Some(ButtonType.OK) => openDashboard(name)
+    (result, name) match
+      case (Some(ButtonType.OK), name: String) => openDashboard(name)
       case _ =>
 
 

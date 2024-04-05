@@ -64,9 +64,12 @@ object SaveDashboard:
     var shownComponentsArray: Array[Map[String, String]] = Array()
 
     for component <- shownComponents do
-      shownComponentsArray = shownComponentsArray :+ getComponentData(component)
+      getComponentData(component) match
+        case Some(component) =>
+          shownComponentsArray = shownComponentsArray :+ component
+        case None =>
 
-    shownComponentsArray.dropRight(2) // this drops the selection rectangle and the button far away
+    shownComponentsArray
 
 
   def getHiddenComponentsMap =
@@ -74,18 +77,23 @@ object SaveDashboard:
     var hiddenComponentsArray: Array[Map[String, String]] = Array()
 
     for component <- hiddenComponents do
-      hiddenComponentsArray = hiddenComponentsArray :+ getComponentData(component)
+      getComponentData(component) match
+        case Some(component) =>
+          hiddenComponentsArray = hiddenComponentsArray :+ component
+        case None =>
 
     hiddenComponentsArray
-  
-  def getComponentData(node: Node): Map[String, String] =
-    var componentData: Map[String, String] = Map()
+
+  def getComponentData(node: Node): Option[Map[String, String]] =
+    var componentData: Option[Map[String, String]] = None
 
     node match
       case pieChart: PieChart =>
+        var map: Map[String, String] = Map()
         val name = pieChart.getTitle.split(" ")(3)
-        componentData += "type" -> "pie chart"
-        componentData += "portfolio" -> name
+        map += "type" -> "pie chart"
+        map += "portfolio" -> name
+        componentData = Some(map)
 
       case scatterPlot: ScatterChart[Number, Number] =>
         val year = scatterPlot.getTitle.split(" ")(5)
@@ -94,36 +102,48 @@ object SaveDashboard:
         for serie <- companyData do
           val companyName = serie.getName.split(" ").head
           companyNames = companyNames :+ companyName
-        componentData += "type" -> "scatter plot"
-        componentData += "company1" -> companyNames(0)
-        componentData += "company2" -> companyNames(1)
-        componentData += "year" -> year
+
+        var map: Map[String, String] = Map()
+        map += "type" -> "scatter plot"
+        map += "company1" -> companyNames(0)
+        map += "company2" -> companyNames(1)
+        map += "year" -> year
+        componentData = Some(map)
 
       case xyChart: LineChart[String, Number] =>
         val name = xyChart.getTitle.split(" ")(0)
         val color = xyChart.getStylesheets.getFirst.split("#")(1).take(8)
-        componentData += "type" -> "xy chart"
-        componentData += "company" -> name
-        componentData += "color" -> color
+
+        var map: Map[String, String] = Map()
+        map += "type" -> "xy chart"
+        map += "company" -> name
+        map += "color" -> color
+        componentData = Some(map)
 
       case barChart: BarChart[String, Number] =>
         val name = barChart.getTitle.split(" ")(0)
         val color = barChart.getStylesheets.getFirst.split("#")(1).take(8)
-        componentData += "type" -> "bar chart"
-        componentData += "company" -> name
-        componentData += "color" -> color
+
+        var map: Map[String, String] = Map()
+        map += "type" -> "bar chart"
+        map += "company" -> name
+        map += "color" -> color
+        componentData = Some(map)
 
       case tile: VBox =>
         val name = tile.children.head.asInstanceOf[javafx.scene.control.Label].text()
         val tileElementCount = tile.children.length
+
+        var map: Map[String, String] = Map()
         if tileElementCount == 2 then
-          componentData += "type" -> "portfolio tile"
-          componentData += "portfolio" -> name
+          map += "type" -> "portfolio tile"
+          map += "portfolio" -> name
         else if tileElementCount == 5 then
-          componentData += "type" -> "stock tile"
-          componentData += "company" -> name
+          map += "type" -> "stock tile"
+          map += "company" -> name
+        componentData = Some(map)
+
       case _ =>
 
     componentData
 
-  
