@@ -27,7 +27,6 @@ object ToolBar:
     removeSelectedComponents()
     
   refreshButton.onAction = (event) =>
-    println("The button is working!!")
     getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Apple")
     getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Microsoft")
     getDataFromAlphavantageAndSave("TIME_SERIES_MONTHLY", "Nvidia")
