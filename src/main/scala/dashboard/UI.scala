@@ -11,8 +11,29 @@ import scalafx.scene.layout.{Pane, VBox}
 
 object UI extends JFXApp3:
 
+
+  /**
+   *  UI Layout
+   * 
+   *  *******************************
+   *  |   menuBar and tooBar        |
+   *  *******************************
+   *  |   l   |                     |
+   *  |   e   |                     |
+   *  |   f   |                     |
+   *  |   t   |                     |
+   *  |   S   |     rightSplit      |
+   *  |   p   |                     |
+   *  |   l   |                     |
+   *  |   i   |                     |
+   *  |   t   |                     |
+   *  *******************************
+   *  
+   *  leftSplit + rightSplit == splitPane
+   */
+
   def start() =
-    val menu = getMenuElement
+    val menuBar = getMenuElement
     val toolBar = getToolBarElement
 
     val leftSplit = getLeftSplit
@@ -22,7 +43,7 @@ object UI extends JFXApp3:
       dividerPositions = 0.3
 
     val mainVBox = new VBox:
-      children = Array(menu, toolBar, splitPane)
+      children = Array(menuBar, toolBar, splitPane)
 
     stage = new JFXApp3.PrimaryStage:
       title = "Personal Portfolio Dashboard"

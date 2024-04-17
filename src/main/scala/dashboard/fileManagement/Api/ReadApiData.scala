@@ -9,7 +9,7 @@ import scala.io.Source
 
 object ReadApiData:
   
-  def readTextFromFile(src: String): String =
+  private def readTextFromFile(src: String): String =
     val bufferedSource = Source.fromFile(src)
     val text = bufferedSource.mkString
     bufferedSource.close()

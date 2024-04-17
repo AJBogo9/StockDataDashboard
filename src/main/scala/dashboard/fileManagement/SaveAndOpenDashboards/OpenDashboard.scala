@@ -31,7 +31,7 @@ object OpenDashboard:
       val element = createComponent(component)
       hideComponent(element)
 
-  def createComponent(data: Map[String, String]) =
+  private def createComponent(data: Map[String, String]) =
     data("type") match
       case "pie chart" => getPieChart(data("portfolio"))
       case "xy chart" => getTimeSeriesChart(data("company"), data("color"))

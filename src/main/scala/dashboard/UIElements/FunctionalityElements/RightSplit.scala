@@ -9,6 +9,8 @@ import scalafx.scene.control.Button
 import scalafx.scene.layout.Pane
 import scalafx.scene.paint.Color
 import javafx.scene.Node
+import scalafx.scene.shape.Rectangle.sfxRectangle2jfx
+
 import scala.collection.mutable.Buffer
 
 
@@ -25,7 +27,7 @@ object RightSplit:
     stroke = Color.Black
     fill = Color.Transparent
     strokeDashArray = List(3d, 3d)
-    visible = false
+    // visible = false
 
   // this button is used to ensure that pane reaches over the whole window.
   private val buttonFarAway = new Button("█▄ █ ▀█▀")
@@ -33,12 +35,12 @@ object RightSplit:
   buttonFarAway.layoutY = 9999
 
   private val pane = new Pane:
-    children = Array(selectionRectangle, buttonFarAway)
+    children = Array(buttonFarAway)
 
   def getPane = pane
 
   def clearRightSplit() =
-    pane.children = Array[scalafx.scene.Node](buttonFarAway, selectionRectangle)
+    pane.children = Array[scalafx.scene.Node](buttonFarAway)
     paneSlotsOccupied = Buffer(
       Buffer(false, false, false, false),
       Buffer(false, false, false, false)
@@ -51,7 +53,8 @@ object RightSplit:
 
     pane.onMousePressed = (event) =>
       if selectButton.selected() then
-        selectionRectangle.visible = true
+        pane.children.addAll(selectionRectangle)
+        // selectionRectangle.visible = true
         startX = event.getX
         startY = event.getY
         selectionRectangle.x = startX
@@ -59,6 +62,7 @@ object RightSplit:
         selectionRectangle.width = 0
         selectionRectangle.height = 0
 
+      // deselect already selected components
       for (child <- pane.children) do
         child match
           case node: javafx.scene.Node =>
@@ -81,21 +85,22 @@ object RightSplit:
 
         for (child <- pane.children) do
           child match
+            case selectionTool: javafx.scene.shape.Rectangle =>
             case element: javafx.scene.Node =>
               element.style =
-                if (element.getBoundsInParent.intersects(selectionRectangle.getBoundsInParent))
+                if element.getBoundsInParent.intersects(selectionRectangle.getBoundsInParent) then
                   "-fx-background-color: blue;"
                 else ""
 
     pane.onMouseReleased = (event) =>
       if selectButton.selected() then
-        selectionRectangle.visible = false
+        pane.children.removeAll(selectionRectangle)
+
 
     pane
 
   def removeSelectedComponents() =
     val selectedComponents = pane.children.filter(_.style().contains("-fx-background-color: blue;"))
-    selectedComponents.removeAll(selectionRectangle)
     for component <- selectedComponents do
       val row = (component.getLayoutY / heigth).toInt
       val column = (component.getLayoutX / width).toInt

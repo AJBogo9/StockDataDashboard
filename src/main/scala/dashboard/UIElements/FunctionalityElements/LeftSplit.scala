@@ -24,12 +24,16 @@ object LeftSplit:
 
 
   /**
-   *                      leftSideVBox
+   * Layout of left split:
+   *
+   *                      leftSideVBox (VBox)
    *                           |
    *     leftSplitHeader                   componentList (HBox)
+   *
    *                                             |
+   *
    *                 hiddenElementNames      separator        hiddenElementButtons
-   *                        |                                            |
+   *
    *
    *
    */
@@ -87,7 +91,7 @@ object LeftSplit:
 
       case tile: javafx.scene.layout.VBox =>
         val name = tile.children.head.asInstanceOf[javafx.scene.control.Label].text()
-        val label = Label(s" - $name label")
+        val label = Label(s" - $name tile")
         hiddenElementNames.children.add(label)
 
         val addButton = new Button("Add")

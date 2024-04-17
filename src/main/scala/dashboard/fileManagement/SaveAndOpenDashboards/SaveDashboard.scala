@@ -72,7 +72,7 @@ object SaveDashboard:
     shownComponentsArray
 
 
-  def getHiddenComponentsMap =
+  private def getHiddenComponentsMap =
     val hiddenComponents = getHiddenElements
     var hiddenComponentsArray: Array[Map[String, String]] = Array()
 
@@ -84,7 +84,7 @@ object SaveDashboard:
 
     hiddenComponentsArray
 
-  def getComponentData(node: Node): Option[Map[String, String]] =
+  private def getComponentData(node: Node): Option[Map[String, String]] =
     var componentData: Option[Map[String, String]] = None
 
     node match
