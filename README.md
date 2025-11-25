@@ -1,1 +1,3 @@
-For documentation, please read the "project documentation.pdf" file. 
+ # Stock Data Dashboard
+  
+  [View full documentation (PDF)](<./project documentation.pdf>)
