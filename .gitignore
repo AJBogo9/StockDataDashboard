@@ -1,4 +1,73 @@
-.bsp
-.idea
-target
+# Sensitive data
 apiKey.txt
+
+# SBT specific
+target/
+project/target/
+project/project/
+lib_managed/
+src_managed/
+.history
+.lib/
+dist/*
+.cache
+.classpath
+.scala_dependencies
+*.class
+
+# IDE Files
+.bsp/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.metals/
+.bloop/
+
+# Eclipse
+.settings/
+.project
+.classpath
+
+# Scala specific
+*.log
+*.orig
+
+# OS specific
+.DS_Store
+Thumbs.db
+*~
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Temporary files
+tmp/
+temp/
+
+# Logs
+logs/
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Build artifacts that shouldn't be in git
+project/boot/
+project/plugins/project/
+
+# Ensime specific (Scala IDE)
+.ensime
+.ensime_cache/
+
+# Scala worksheets
+*.sc
+
+# Local configuration override
+local.sbt
